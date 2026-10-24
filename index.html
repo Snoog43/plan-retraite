@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Plan retraite du foyer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : une colonne de lecture, frise verticale des phases (de 2026 à 2062), outils en bas */
+:root {
+  --bg: #f3f5f4;          /* gris schiste clair */
+  --surface: #ffffff;
+  --ink: #1d2a27;
+  --muted: #5d6b67;
+  --line: #d6ddda;
+  --accent: #2f6b57;      /* vert chêne vert des Cévennes */
+  --accent-soft: #e2efe9;
+  --chestnut: #8a4b2a;    /* châtaigne : jalons et dates */
+  --warn: #9a5b00;
+  --warn-soft: #fbf0dc;
+  --done: #2f6b57;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131a18; --surface: #1b2421; --ink: #e4ebe8; --muted: #9aa8a3; --line: #2e3a36;
+    --accent: #6fbf9f; --accent-soft: #1f3a31; --chestnut: #d9925f; --warn: #e3a64a; --warn-soft: #3a2c14; --done: #6fbf9f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131a18; --surface: #1b2421; --ink: #e4ebe8; --muted: #9aa8a3; --line: #2e3a36;
+  --accent: #6fbf9f; --accent-soft: #1f3a31; --chestnut: #d9925f; --warn: #e3a64a; --warn-soft: #3a2c14; --done: #6fbf9f;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(30px, 6vw, 44px); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 24px; font-weight: 700; }
+h3 { font-size: 17px; font-weight: 500; }
+p { margin: 0; }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--chestnut); font-weight: 600; }
+.muted { color: var(--muted); }
+a { color: var(--accent); }
+
+header { display: flex; flex-direction: column; gap: 14px; }
+.lede { color: var(--muted); max-width: 62ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.fact { border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 13px; background: var(--surface); }
+
+.progress-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+.bar { height: 10px; background: var(--accent-soft); border-radius: 999px; overflow: hidden; }
+.bar > span { display: block; height: 100%; background: var(--accent); width: 0; transition: width .4s ease; }
+.progress-row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.next { font-size: 15px; }
+.next b { font-weight: 600; }
+.sync { font-size: 12px; color: var(--muted); }
+.sync.warn { color: var(--warn); }
+
+/* Frise */
+.timeline { display: flex; flex-direction: column; gap: 36px; }
+.phase { display: grid; grid-template-columns: 22px 1fr; gap: 0 16px; }
+.rail { display: flex; flex-direction: column; align-items: center; }
+.dot { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--accent); background: var(--bg); margin-top: 6px; flex: none; }
+.phase.complete .dot { background: var(--accent); }
+.rail::after { content: ""; flex: 1; width: 2px; background: var(--line); margin-top: 6px; }
+.phase:last-child .rail::after { display: none; }
+.phase-body { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.phase-head { display: flex; flex-direction: column; gap: 4px; }
+.phase-meta { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.count { font-size: 13px; color: var(--muted); }
+.phase-intro { color: var(--muted); max-width: 62ch; }
+
+.items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.item { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.item-row { display: grid; grid-template-columns: 26px 1fr; gap: 12px; padding: 12px 14px; align-items: start; }
+.item input[type=checkbox] { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--accent); cursor: pointer; }
+.item label { cursor: pointer; font-weight: 500; display: block; }
+.item.done label { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+.item .when { font-size: 12px; color: var(--done); margin-top: 2px; }
+.item details { margin-top: 6px; }
+.item summary { font-size: 13px; color: var(--accent); cursor: pointer; width: fit-content; }
+.item summary:focus-visible, .item input:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.how { font-size: 14.5px; color: var(--ink); margin-top: 8px; display: flex; flex-direction: column; gap: 6px; max-width: 64ch; }
+.how ul, .how ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 1px 7px; border-radius: 4px; margin-left: 6px; vertical-align: 2px; }
+.tag.cond { background: var(--warn-soft); color: var(--warn); }
+.tag.key { background: var(--accent-soft); color: var(--accent); }
+
+.months { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.month { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; gap: 10px; align-items: center; cursor: pointer; }
+.month input { width: 20px; height: 20px; accent-color: var(--accent); margin: 0; cursor: pointer; }
+.month span { font-size: 14px; }
+.month small { display: block; color: var(--muted); font-size: 12px; }
+.month.done { border-color: var(--accent); background: var(--accent-soft); }
+
+.callout { border-left: 3px solid var(--warn); background: var(--warn-soft); padding: 12px 14px; border-radius: 0 8px 8px 0; font-size: 14.5px; }
+.year-nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.year-nav button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+.year-nav button:hover { border-color: var(--accent); }
+.year-nav .year { font-family: var(--f-display); font-size: 22px; font-weight: 700; min-width: 70px; text-align: center; }
+.year-nav .age { font-size: 13px; color: var(--muted); }
+
+.milestones { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.milestones li { display: grid; grid-template-columns: 92px 1fr; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--line); }
+.milestones li:first-child { border-top: 0; }
+.milestones .date { font-family: var(--f-mono); font-size: 13px; color: var(--chestnut); padding-top: 2px; }
+
+section.tool { display: flex; flex-direction: column; gap: 16px; }
+.sim { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 18px; }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label { font-size: 13px; color: var(--muted); }
+.field .val { font-family: var(--f-mono); font-size: 15px; font-weight: 600; }
+.field input[type=range] { width: 100%; accent-color: var(--accent); }
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.res { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+.res .k { font-size: 12px; color: var(--muted); }
+.res .v { font-family: var(--f-mono); font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.res .s { font-size: 12px; color: var(--muted); }
+.res.main { border-color: var(--accent); background: var(--accent-soft); }
+
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.rule { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+.rule h3 { font-size: 16px; }
+.rule p { font-size: 14.5px; color: var(--muted); }
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.tabs button { font: inherit; font-weight: 600; font-size: 15px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted); padding: 10px 14px; cursor: pointer; margin-bottom: -1px; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs button:hover { color: var(--ink); }
+footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 18px; }
+@media (prefers-reduced-motion: reduce) { .bar > span { transition: none; } }
+@media (max-width: 480px) { .milestones li { grid-template-columns: 1fr; gap: 2px; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Plan sur 36 ans</span>
+    <h1>Plan retraite du foyer</h1>
+    <p class="lede">Le plan pas à pas pour transformer vos économies en capital retraite, en passant d'abord par une année prudente tant que les revenus du foyer sont réduits. Coche chaque étape quand elle est faite : ta progression est enregistrée.</p>
+        <div class="progress-card" aria-live="polite">
+      <div class="progress-row">
+        <strong>Progression</strong>
+        <span class="num" id="pct">0 %</span>
+      </div>
+      <div class="bar"><span id="bar"></span></div>
+      <p class="next" id="next"></p>
+      <p class="sync" id="sync">Chargement de ta progression…</p>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Protocoles">
+    <button type="button" role="tab" data-tab="invest" aria-selected="true">Protocole investissement</button>
+    <button type="button" role="tab" data-tab="mdph" aria-selected="false">Démarches MDPH</button>
+  </nav>
+
+  <div class="timeline" id="timeline"></div>
+
+  <section class="tool" aria-labelledby="sim-title" data-only="invest">
+    <div class="phase-head">
+      <span class="eyebrow">Outil</span>
+      <h2 id="sim-title">Simulateur de capital</h2>
+      <p class="phase-intro">Change les curseurs pour voir l'effet du versement mensuel. Montants en euros d'aujourd'hui, avec un rendement après inflation : c'est une projection, jamais une garantie.</p>
+    </div>
+    <div class="sim">
+      <div class="fields">
+        <div class="field">
+          <label for="s-init">Épargne investie au départ (fin 2028)</label>
+          <span class="val" id="v-init"></span>
+          <input type="range" id="s-init" min="0" max="40000" step="1000" value="20000">
+        </div>
+        <div class="field">
+          <label for="s-month">Versement mensuel du foyer (dès 2028)</label>
+          <span class="val" id="v-month"></span>
+          <input type="range" id="s-month" min="0" max="2000" step="50" value="800">
+        </div>
+        <div class="field">
+          <label for="s-rate">Rendement annuel après inflation</label>
+          <span class="val" id="v-rate"></span>
+          <input type="range" id="s-rate" min="2" max="7" step="0.5" value="5">
+        </div>
+        <div class="field">
+          <label for="s-age">Âge d'arrêt du travail</label>
+          <span class="val" id="v-age"></span>
+          <input type="range" id="s-age" min="50" max="67" step="1" value="60">
+        </div>
+      </div>
+      <div class="results" id="results"></div>
+    </div>
+  </section>
+
+  <section class="tool" aria-labelledby="rules-title" data-only="invest">
+    <div class="phase-head">
+      <span class="eyebrow">À relire en cas de doute</span>
+      <h2 id="rules-title">Les règles du plan</h2>
+    </div>
+    <div class="rules">
+      <div class="rule"><h3>Quand la bourse chute</h3><p>Une baisse de 30 à 50 % arrivera plusieurs fois d'ici 2058. Tu ne vends rien, tu continues les versements : tu achètes moins cher.</p></div>
+      <div class="rule"><h3>Un seul ETF</h3><p>Du WPEA dans les deux PEA, c'est tout. Pas d'actions individuelles, pas de crypto, pas de « bon plan » vu sur les réseaux.</p></div>
+      <div class="rule"><h3>Le matelas d'abord</h3><p>S'il sert pour un imprévu, tu le reconstitues avant de réinvestir. C'est lui qui t'évite de vendre au mauvais moment.</p></div>
+      <div class="rule"><h3>Les frais comptent</h3><p>0,5 % de frais en plus par an coûte des dizaines de milliers d'euros sur 30 ans. Refuse les produits de placement de la banque.</p></div>
+      <div class="rule"><h3>Pas de timing</h3><p>N'attends jamais « le bon moment » pour investir. Le calendrier fixé ici remplace toutes les prévisions.</p></div>
+      <div class="rule"><h3>On ne retire pas</h3><p>PEA et assurances-vie restent intacts jusqu'à la retraite. Les projets se financent avec le matelas et l'épargne courante.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Synthèse éducative tirée de 122 000 discussions Reddit (r/vosfinances, r/VosSous, r/BourseFr, r/FranceFIRE…) et des règles en vigueur en octobre 2026. Ce n'est pas un conseil financier agréé : pour un avis personnalisé, un conseiller en investissements financiers (CIF) rémunéré par honoraires.</p>
+    <p>Taux et plafonds au 24 octobre 2026, à revérifier chaque année : Livret A et LDDS 1,7 % (depuis le 1er août 2026), LEP 2,5 %, prélèvements sociaux 18,6 % sur les gains du PEA et 17,2 % sur ceux de l'assurance-vie, flat tax 31,4 % hors enveloppes.</p>
+  </footer>
+</div>
+
+<script>
+const PLAN = [
+  {
+    id: "p0", when: "Cette semaine · fin octobre 2026", title: "Sécuriser le foyer",
+    intro: "Avant tout placement : connaître votre vrai budget, la durée de vos revenus actuels et votre droit au LEP.",
+    items: [
+      { id: "are-fin", key: true, t: "Noter la date de fin des allocations chômage de ton conjoint",
+        how: `<p>Dans son espace France Travail, relève la durée d'indemnisation et la date de fin de droits. Si le retour à l'emploi prend plus de temps que prévu, c'est à partir de cette date que le matelas prend le relais.</p>` },
+      { id: "lep-check", key: true, t: "Vérifier si vous avez droit au LEP",
+        how: `<p>Le LEP rapporte <span class="num">2,5 %</span> net, sans risque, jusqu'à <span class="num">10 000 €</span> par personne. Il dépend du revenu fiscal de référence.</p>
+<ol><li>Sur impots.gouv.fr (espace particulier, rubrique Documents), ouvre <b>les deux</b> derniers avis : l'avis 2025 (revenus 2024) et l'avis 2026 (revenus 2025). La banque accepte l'un ou l'autre.</li><li>Regarde la ligne « revenu fiscal de référence » et le nombre de parts (2 pour un couple marié sans enfant).</li><li>Si l'un des deux est inférieur ou égal à <span class="num">35 326 €</span>, vous avez droit au LEP, chacun le sien (soit <span class="num">20 000 €</span> à 2,5 % pour le foyer).</li><li>Ouverture dans n'importe quelle banque, Crédit Agricole compris, avec l'avis en question. Dès 30 €.</li></ol><p class="muted">Repère : le revenu fiscal de référence vaut à peu près 90 % des salaires et allocations chômage nets imposables du foyer. Le plafond correspond donc à environ 39 000 € nets imposables par an pour vous deux. Une indemnité de rupture conventionnelle est en général exonérée et ne compte pas. Le LEP n'est fermé que si le plafond est dépassé deux années de suite.</p>` },
+      { id: "budget", t: "Faire le vrai budget du foyer",
+        how: `<ol><li>Reprends les 3 derniers relevés de compte.</li><li>Ajoute les dépenses qui ne tombent pas tous les mois : taxe foncière, assurances habitation et auto, carburant, entretien voiture et maison, cadeaux. Divise le total annuel par 12.</li><li>Note le total mensuel réel : il sert à calculer le matelas.</li></ol>` },
+      { id: "matelas-calc", t: "Calculer le matelas de sécurité cible",
+        how: `<p>Tant qu'un seul revenu rentre : <b>12 mois de dépenses réelles</b>, plus les projets prévus dans les 5 ans (voiture, travaux). Pour vous, l'ordre de grandeur est d'environ <span class="num">20 000 €</span>.</p>` },
+      { id: "droits", key: true, t: "T'inscrire à France Travail et vérifier tes trimestres de retraite",
+        how: `<p>Sans revenu ni inscription, tu ne valides <b>aucun trimestre de retraite</b>. Or il en faudra 172 pour une retraite à taux plein à 64 ans.</p>
+<ol><li>Consulte ton relevé de carrière sur info-retraite.fr : il montre les trimestres déjà validés.</li><li>Inscris-toi à France Travail comme demandeur d'emploi : accompagnement, formations financées, et une première période de chômage non indemnisé peut valider jusqu'à 6 trimestres sous conditions (à confirmer avec ton conseiller).</li><li>Repère : un emploi, même à temps partiel, valide 4 trimestres par an dès environ 7 200 € brut annuels.</li></ol>
+<p class="muted">RSA : il dépend des ressources du couple (plafond de 977 € par mois pour un couple sans enfant en 2026). À revoir seulement si ses allocations s'arrêtent avant son retour à l'emploi.</p>` },
+      { id: "lep-moi", key: true, t: "Vérifier ton propre droit au LEP",
+        how: `<p>Si vous déclarez séparément, ton droit dépend de <b>ton</b> avis. Avec peu ou pas de revenus, ton revenu fiscal de référence peut être sous le plafond de <span class="num">23 028 €</span>.</p>
+<ol><li>Sur impots.gouv.fr, cherche ton avis 2025 ou 2026 (même « non imposable »).</li><li>Si tu en as un : ouvre ton LEP au Crédit Agricole avec cet avis. Tout le matelas sera alors à 2,5 %.</li><li>Si tu n'as jamais déclaré : la déclaration est obligatoire même à 0 €. La banque peut accepter une déclaration sur l'honneur en attendant ton premier avis.</li></ol>` },
+    ]
+  },
+  {
+    id: "pm", tab: "mdph", when: "Novembre 2026 → printemps 2027 · Lozère", title: "Ton dossier MDPH, de A à Z",
+    intro: "Ta reconnaissance liée à l'autisme peut t'ouvrir l'AAH (1 041,59 € par mois au 1er avril 2026) et la RQTH. Depuis octobre 2023, l'AAH ne tient plus compte des revenus du conjoint : sans revenu personnel, le montant plein est possible. Si elle est accordée, l'AAH est versée à partir du mois qui suit la réception d'un dossier complet par la MDPH : chaque mois gagné sur le dépôt compte.",
+    items: [
+      { id: "mdph-ais", t: "Appeler Autisme Info Service pour être orienté",
+        how: `<p>Numéro vert gratuit : <span class="num">0 800 71 40 40</span> (site autismeinfoservice.fr, aussi par courriel). Service national pour les personnes autistes et leurs proches : démarches MDPH, accès aux soins, emploi. Utile pour poser toutes tes questions avant de commencer.</p>` },
+      { id: "mdph-mt", key: true, t: "Trouver un médecin traitant",
+        how: `<ol><li>Le plus proche : la maison de santé du Collet-de-Dèze (sur la RN 106). Appelle pour demander si un médecin prend de nouveaux patients.</li><li>Sinon, cherche sur Doctolib, Maiia ou lemedecin.fr un généraliste autour d'Alès, Florac ou Saint-Germain-de-Calberte.</li><li>Si personne n'accepte : appelle l'Assurance Maladie au <span class="num">36 46</span> et dis « je n'ai pas de médecin traitant », ils aident à en trouver un.</li><li>Au premier rendez-vous, demande-lui de devenir ton médecin traitant (formulaire rempli par lui en ligne).</li></ol>` },
+      { id: "mdph-rdv1", key: true, t: "Premier rendez-vous : expliquer et demander les courriers",
+        how: `<p>Prépare une feuille avec ce que tu veux dire (plus simple si parler est difficile) :</p>
+<ul><li>« Je suis autiste avec un haut potentiel, je veux demander l'AAH et la RQTH à la MDPH. »</li><li>Tes difficultés concrètes au quotidien et au travail (voir l'étape « journal »).</li><li>Les documents existants : diagnostic, bilans, tests de QI.</li></ul>
+<p>Demande-lui : un courrier pour le CMP de Florac, un courrier pour l'évaluation autisme si tu n'as pas de diagnostic écrit, et le certificat médical MDPH (il peut le faire à un deuxième rendez-vous).</p>` },
+      { id: "mdph-cmp", t: "Contacter le CMP adultes de Florac pour un suivi psychiatrique",
+        how: `<p>CMP « Le Ferradou », 6 rue des Aires, 48400 Florac — <span class="num">04 66 45 21 51</span>. Gratuit, rattaché à l'hôpital François Tosquelles. Il accueille les adultes avec ou sans rendez-vous, aussi sur courrier du médecin traitant. Un psychiatre qui te suit pourra appuyer ton dossier MDPH. Demande au téléphone si ta commune dépend bien de ce CMP.</p>` },
+      { id: "mdph-diag", cond: "si pas de diagnostic écrit", t: "Demander une évaluation de l'autisme adulte",
+        how: `<ul><li>Au plus près : l'équipe associée autisme de Lozère, 24 avenue Savorgnan de Brazza, 48100 Marvejols — contact@evaluationtsa48.fr.</li><li>Sinon : l'unité de diagnostic de l'autisme adulte du CHU de Montpellier (hôpital La Colombière) — <span class="num">04 67 33 28 05</span>, autisme-adulte@chu-montpellier.fr. Elle couvre la Lozère.</li><li>Les délais peuvent être longs : <b>n'attends pas le diagnostic final pour déposer le dossier MDPH</b>. Le certificat du médecin et les documents existants suffisent pour commencer ; tu ajouteras le compte rendu ensuite.</li></ul>
+<p class="muted">Le haut potentiel n'est pas reconnu comme un handicap en soi : c'est l'autisme et ses conséquences qui fondent la demande.</p>` },
+      { id: "mdph-docs", t: "Rassembler les documents existants",
+        how: `<ul><li>Diagnostic ou comptes rendus psychiatriques, bilans neuropsychologiques, rapport de test de QI (haut potentiel).</li><li>Bulletins ou remarques scolaires qui montrent des difficultés anciennes.</li><li>Historique de travail : emplois quittés, arrêts, ruptures, et pourquoi.</li><li>Photocopie de ta carte d'identité et un justificatif de domicile récent.</li></ul>` },
+      { id: "mdph-journal", t: "Tenir un journal de tes difficultés pendant 2 semaines",
+        how: `<p>Chaque jour, quelques lignes : ce qui t'a demandé un gros effort, ce que tu as évité, ce qui t'a épuisé (bruit, lumière, imprévus, appels, contacts sociaux), ce que ton conjoint a fait à ta place. Ce journal sert à la fois pour le médecin et pour le formulaire : la MDPH évalue les <b>conséquences concrètes</b>, pas le diagnostic seul.</p>` },
+      { id: "mdph-certif", key: true, t: "Faire remplir le certificat médical MDPH (cerfa 15695)",
+        how: `<ol><li>Par ton médecin traitant ou ton psychiatre, de préférence quelqu'un qui connaît l'autisme adulte.</li><li>Il doit dater de moins de 6 mois au dépôt (1 an dans certains départements : vérifie sur le site de ta MDPH).</li><li>Demande-lui de décrire les retentissements concrets : fatigue, surcharge sensorielle, relations sociales, organisation, et ce qui a rendu le travail difficile.</li></ol>` },
+      { id: "mdph-form", key: true, t: "Remplir le formulaire de demande MDPH (cerfa 15692)",
+        how: `<ol><li>Coche dans le même dossier : <b>AAH</b>, <b>RQTH</b> et <b>orientation professionnelle</b>.</li><li>La partie « vie quotidienne » et le projet de vie comptent beaucoup : décris une semaine type, ce que tu ne peux pas faire seul, ce qui te coûte en énergie, et ce qui s'est passé dans tes emplois ou études. Des exemples précis valent mieux que des généralités.</li><li>Pièces : pièce d'identité, justificatif de domicile, certificat médical, bilans.</li></ol>
+<p>Ton conjoint peut remplir la partie « aidant familial » : son regard sur ce qu'elle fait pour toi au quotidien renforce le dossier.</p>
+<p class="muted">Pour t'aider à le remplir : France Services de Saint-Germain-de-Calberte (<span class="num">07 85 97 22 62</span>) ou de Florac (<span class="num">04 66 47 48 82</span>), Autisme Info Service, ou l'accueil de la MDPH. Appelle avant pour vérifier qu'ils aident sur les dossiers MDPH.</p>` },
+      { id: "mdph-depot", key: true, t: "Déposer le dossier complet à la MDPH de la Lozère",
+        how: `<p>MDPH de la Lozère, 6 avenue du Père Coudrin, 48000 Mende — <span class="num">04 66 49 60 70</span> — accueilmdph48@mdph48.fr (lundi au vendredi, 8 h 30 – 12 h et 13 h 30 – 17 h).</p>
+<ol><li>Vérifie qu'il ne manque rien : formulaire signé, certificat médical de moins de 6 mois, pièce d'identité, justificatif de domicile. Un dossier incomplet retarde la date de départ de l'AAH.</li><li>Envoie-le en recommandé avec accusé de réception (ou en ligne si la MDPH le propose). C'est la date de <b>réception</b> qui compte.</li><li>Garde une copie complète et l'accusé de réception.</li></ol>` },
+      { id: "mdph-suivi", t: "Suivre le dossier pendant l'attente (environ 4 à 5 mois)",
+        how: `<p>Le délai moyen national est d'environ 4,6 mois pour les adultes. La MDPH peut demander des pièces ou te convoquer : réponds vite. Ajoute le compte rendu de diagnostic dès que tu l'as. Tu reçois ensuite la décision de la CDAPH (la commission) par courrier.</p>` },
+      { id: "mdph-recours", cond: "si refus", t: "Contester sous 2 mois si la décision ne te convient pas",
+        how: `<p>Recours administratif préalable (RAPO) auprès de la MDPH, dans les 2 mois après la notification. Ajoute des éléments médicaux ou des témoignages si possible. En cas de nouveau refus, le tribunal judiciaire (pôle social) peut être saisi. Un refus en première demande n'est pas rare pour l'autisme adulte. Si le recours aboutit, l'AAH est rattrapée depuis la date du dépôt.</p>` },
+      { id: "mdph-caf", t: "Si l'AAH est accordée : finaliser avec la CAF",
+        how: `<ul><li>La CAF verse l'AAH après la décision de la CDAPH. Réponds vite à ses demandes et déclare tes ressources (les tiennes seulement).</li><li>L'épargne elle-même n'est pas comptée : capital du LEP, du Livret A, du PEA et de l'assurance-vie, ni les intérêts des livrets. Seuls les gains imposables retirés comptent. Comme le plan ne retire rien, il est compatible avec l'AAH.</li></ul>` },
+      { id: "mdph-plan", t: "Si l'AAH est accordée : augmenter les versements du plan",
+        how: `<p>Le revenu du foyer augmente d'environ 1 040 € par mois. Garde une marge confortable, puis ajoute par exemple <span class="num">400 €</span>/mois aux versements (200 € par PEA en plus via l'investissement programmé). Chaque 100 €/mois en plus représente environ 88 000 € de plus à 60 ans, à 5 %/an après inflation.</p>` },
+      { id: "mdph-rqth", t: "Avec la RQTH : t'inscrire à Cap emploi ou France Travail",
+        how: `<p>La RQTH donne accès à Cap emploi (accompagnement spécialisé), à l'emploi accompagné et à des aménagements de poste. L'AAH reste cumulable en partie avec un salaire. Travailler, même à temps partiel, valide aussi des trimestres de retraite.</p>` },
+      { id: "mdph-retraite", t: "Comprendre l'effet sur ta retraite",
+        how: `<p>Avec l'AAH, la retraite peut être prise dès 62 ans au titre de l'inaptitude, au taux plein quelle que soit la durée cotisée. Mais la pension dépend des salaires réellement gagnés : sans carrière, elle sera faible. Le capital du plan (PEA et assurance-vie) reste donc ta vraie retraite. Vérifie tes trimestres sur info-retraite.fr.</p>` },
+    ]
+  },
+  {
+    id: "p1", when: "Novembre 2026", title: "Ouvrir les enveloppes",
+    intro: "On ouvre tout de suite, avec de petits montants. Les compteurs fiscaux démarrent à l'ouverture : 5 ans pour le PEA, 8 ans pour l'assurance-vie.",
+    items: [
+      { id: "lep-open", key: true, t: "Ouvrir les LEP avant le 31 décembre",
+        how: `<p>En 2026, la banque accepte l'avis 2025 <b>ou</b> l'avis 2026 : si l'un des deux est sous le plafond, ouvrez le LEP cette année, car l'année suivante elle regardera des avis plus récents.</p>
+<ul><li>Au guichet ou en ligne, dans n'importe quelle banque, avec l'avis qui convient. Puis y verser jusqu'à <span class="num">10 000 €</span> chacun.</li><li>Une fois ouvert, un seul dépassement de plafond est toléré : le LEP n'est fermé qu'après deux années de suite au-dessus.</li></ul>` },
+      { id: "matelas-place", t: "Placer le reste du matelas sur Livret A et LDDS",
+        how: `<ul><li>Objectif total : environ <span class="num">20 000 €</span> disponibles, LEP compris.</li><li>Sinon : Livret A (plafond <span class="num">22 950 €</span>) et LDDS (<span class="num">12 000 €</span>).</li><li>Objectif : environ <span class="num">20 000 €</span> disponibles à tout moment.</li></ul>` },
+      { id: "pea-1", key: true, t: "Ouvrir ton PEA chez Bourse Direct (100 €)",
+        how: `<p><b>Pourquoi Bourse Direct :</b> depuis mai 2026, ses investissements programmés achètent du WPEA ou du DCAM chaque mois <b>sans frais et sans minimum</b>, automatiquement. C'est exactement ce qu'il faut pour des versements de 250 à 300 € par PEA.</p>
+<ol><li>Sur boursedirect.fr : ouvrir un PEA en ligne (environ 15 minutes).</li><li>Pièces : carte d'identité, justificatif de domicile, RIB du Crédit Agricole.</li><li>Premier versement : <span class="num">100 €</span>. La date d'ouverture lance le compteur de 5 ans.</li></ol>
+<p class="muted">Alternative : Boursorama, le plus cité sur Reddit, mais l'achat de WPEA n'y est gratuit que pour des ordres d'au moins 500 € (sinon 1,99 € par ordre). Il faudrait alors grouper : un ordre de 500 € tous les deux mois par PEA. Le compte courant peut rester au Crédit Agricole.</p>` },
+      { id: "pea-2", key: true, t: "Ouvrir le PEA de ton conjoint (100 €)",
+        how: `<p>Même démarche, à son nom. Deux PEA donnent <span class="num">300 000 €</span> de plafond au foyer.</p>` },
+      { id: "av-1", t: "Ouvrir ton assurance-vie en ligne (Linxea Spirit 2)",
+        how: `<ol><li>Souscription en ligne sur linxea.com, contrat Spirit 2 : 0 % de frais sur versement, 0,50 %/an sur les ETF.</li><li>Versement initial : <span class="num">500 €</span> minimum. Versements programmés ensuite dès <span class="num">100 €</span>/mois.</li><li>Clause bénéficiaire : ton conjoint, puis « à défaut, mes héritiers ».</li><li>Support : un ETF Monde, avec un peu de fonds euros si tu veux un amortisseur.</li></ol>` },
+      { id: "av-2", t: "Ouvrir l'assurance-vie de ton conjoint",
+        how: `<p>Même contrat, à son nom, avec toi comme bénéficiaire. Le compteur de 8 ans démarre pour elle aussi.</p>` },
+      { id: "first-buy", t: "Créer l'investissement programmé en WPEA dans chaque PEA",
+        how: `<ol><li>Dans le PEA, menu « Investissement programmé » : choisis <b>WPEA</b> et vérifie l'ISIN <span class="num">IE0002XZSHO1</span> (iShares MSCI World Swap PEA, 0,20 %/an).</li><li>Montant mensuel : <span class="num">250 €</span> par PEA pendant l'année prudente, prélevé sur le Crédit Agricole.</li><li>Le PEA n'achète que des parts entières (environ 7 € la part en octobre 2026) : le petit reste attend le mois suivant.</li></ol><p class="muted">Alternative équivalente : DCAM (Amundi, ISIN FR001400U5Q4, 0,20 %/an). Garde le même ETF ensuite.</p>` },
+      { id: "refuse-ca", t: "Refuser les placements proposés par la banque",
+        how: `<p>Assurance-vie maison, PER bancaire, fonds « gérés » : frais d'entrée et de gestion élevés. Garde le Crédit Agricole pour le compte courant, le crédit et les livrets.</p>` },
+    ]
+  },
+  {
+    id: "p2", when: "Décembre 2026 → reprise du travail (≈ fin 2027)", title: "L'année prudente",
+    intro: "Tant que les revenus sont réduits : on investit lentement, 500 € par mois pris sur l'épargne, et seulement si le mois n'est pas dans le rouge. Le reste attend sur le Livret A.",
+    months: { prefix: "m2", label: "250 € par PEA", list: ["Déc. 2026","Janv. 2027","Févr. 2027","Mars 2027","Avr. 2027","Mai 2027","Juin 2027","Juil. 2027","Août 2027","Sept. 2027","Oct. 2027","Nov. 2027"] },
+    items: [
+      { id: "skip-rule", t: "Règle du mois : si le budget est négatif, sauter le versement",
+        how: `<p>Sauter un mois n'a aucune importance sur 30 ans. Toucher au matelas pour investir, si. Coche cette case quand la règle est comprise.</p>` },
+      { id: "stop-are", t: "Règle de sécurité : si les allocations de ton conjoint s'arrêtent avant son retour à l'emploi",
+        how: `<p>On arrête les versements mensuels et tout reste sur les livrets. Le matelas de <span class="num">20 000 €</span> couvre alors environ 13 mois de dépenses. C'est aussi le moment de faire une simulation RSA sur caf.fr.</p>` },
+      { id: "impots-2027", t: "Mai 2027 : déclarer vos revenus 2026 ensemble",
+        how: `<p>Mariés, vous déclarez normalement en commun (2 parts). Si vous vous êtes mariés en 2026, vous pouvez encore choisir de déclarer séparément pour cette année-là : compare les deux sur le simulateur d'impots.gouv.fr. Toi, tu déclares même à 0 € : c'est ce qui te donne un avis pour le LEP. Ton conjoint n'est pas imposable : le PER reste inutile.</p>` },
+    ]
+  },
+  {
+    id: "p3", when: "Retour à l'emploi de ton conjoint", title: "Passer en vitesse de croisière",
+    intro: "Quand les revenus reviennent, refais le budget : il doit rester une vraie marge après le crédit, les charges et la vie courante. On investit le reste de l'épargne sur 6 mois, puis 800 € par mois en automatique.",
+    months: { prefix: "m3", label: "≈ 2 100 € investis", list: ["Mois 1","Mois 2","Mois 3","Mois 4","Mois 5","Mois 6"] },
+    items: [
+      { id: "budget-2", t: "Refaire le budget avec le nouveau salaire",
+        how: `<p>Même méthode qu'en phase 1. Le matelas peut redescendre à 6 mois de dépenses : l'excédent rejoint les investissements.</p>` },
+      { id: "auto-800", key: true, t: "Mettre en place le virement automatique de 800 €/mois",
+        how: `<p>Le lendemain de la paie, depuis le Crédit Agricole :</p><ul><li><span class="num">280 €</span> vers chaque PEA : monte l'investissement programmé de 250 à 280 €, l'achat se fait tout seul ;</li><li><span class="num">120 €</span> vers chaque assurance-vie, en versement programmé.</li></ul><p class="muted">Garde environ 500 € de marge par mois pour la vie et les imprévus.</p>` },
+      { id: "lep-recheck", t: "Revérifier l'éligibilité au LEP",
+        how: `<p>Avec un revenu plus élevé, le droit au LEP peut disparaître. La banque vérifie chaque année ; si vous n'y avez plus droit, l'argent passe sur le Livret A ou le LDDS.</p>` },
+      { id: "per-decide", cond: "si TMI ≥ 30 %", t: "Décider du PER",
+        how: `<p>Le PER réduit l'impôt du montant versé fois votre TMI, mais bloque l'argent jusqu'à 64 ans. Il ne finance jamais la période avant 64 ans : PEA et assurance-vie s'en chargent.</p>` },
+    ]
+  },
+];
+
+const MILESTONES = [
+  { date: "Nov. 2031", id: "ms-pea5", t: "Les PEA ont 5 ans", d: "Les gains ne paient plus d'impôt sur le revenu, seulement les prélèvements sociaux. Des retraits partiels deviennent possibles sans fermer le PEA (mais on n'y touche pas)." },
+  { date: "Nov. 2034", id: "ms-av8", t: "Les assurances-vie ont 8 ans", d: "Lors des retraits, les gains ne paient pas d'impôt sur le revenu jusqu'à 9 200 € par an pour un couple marié (puis 7,5 %). Les prélèvements sociaux de l'assurance-vie restent à 17,2 %, contre 18,6 % sur le PEA. Ce sera la première source de revenus à la retraite." },
+  { date: "Vers 2040", id: "ms-plafond", t: "PEA proches du plafond de 150 000 € versés", d: "Les versements mensuels basculent vers les assurances-vie, puis un compte-titres si besoin." },
+  { date: "2048 · 50 ans", id: "ms-50", t: "Début de la sécurisation", d: "Chaque année, une petite part bascule vers des supports peu risqués (fonds euros en assurance-vie, monétaire en PEA)." },
+  { date: "2053 · 55 ans", id: "ms-55", t: "5 ans de dépenses à l'abri", d: "L'équivalent de 5 années de dépenses sur fonds euros ou monétaire, pour ne jamais vendre des actions pendant une baisse." },
+  { date: "2058 · 60 ans", id: "ms-60", t: "Arrêt du travail possible", d: "Ordre des retraits : d'abord les gains des assurances-vie dans la limite de l'abattement, puis des retraits partiels des PEA. Pas de pension publique avant 64 ans." },
+  { date: "2062 · 64 ans", id: "ms-64", t: "Âge légal de départ", d: "La pension publique s'ajoute (réduite s'il manque des trimestres). Le PER éventuel se débloque. Taux plein automatique à 67 ans." },
+];
+
+const ANNUAL = [
+  { id: "raise", t: "Augmenter le versement mensuel si les revenus ont augmenté" },
+  { id: "matelas", t: "Vérifier que le matelas est plein (sinon, le reconstituer d'abord)" },
+  { id: "tmi", t: "Lire l'avis d'impôt : tranche d'imposition et droit au LEP" },
+  { id: "carriere", t: "Consulter le relevé de carrière sur info-retraite.fr" },
+  { id: "frais", t: "Vérifier les frais du WPEA et des contrats (sans changer pour une mode)" },
+  { id: "nosell", t: "Aucune vente de panique cette année" },
+];
+const YEAR_MIN = 2027, YEAR_MAX = 2062, BIRTH = 1998;
+
+/* ---------- état : db partagé si dispo, sinon cet appareil ---------- */
+const state = {};           // id -> {done, at}
+let db = null, mode = "local";
+const LS = "plan-retraite-checks";
+function loadLocal() { try { Object.assign(state, JSON.parse(localStorage.getItem(LS) || "{}")); } catch (e) {} }
+function saveLocal() { try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {} }
+
+async function toggle(id, done) {
+  const entry = done ? { done: true, at: new Date().toISOString() } : { done: false };
+  state[id] = entry;
+  render();
+  if (mode === "db") {
+    try { await db.doc("checks/" + id).set(entry); }
+    catch (e) {
+      if (e && (e.code === "invalid_argument" || e.code === "not_granted")) { mode = "local"; setSync(); }
+      saveLocal();
+    }
+  } else saveLocal();
+}
+
+function setSync() {
+  const el = document.getElementById("sync");
+  if (mode === "db") { el.textContent = "Progression enregistrée en ligne : tu la retrouves sur tous tes appareils."; el.className = "sync"; }
+  else { el.textContent = "Progression enregistrée sur cet appareil uniquement."; el.className = "sync warn"; }
+}
+
+/* ---------- rendu ---------- */
+const fmtDate = iso => { try { return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }); } catch (e) { return ""; } };
+const isDone = id => !!(state[id] && state[id].done);
+let year = Math.min(Math.max(new Date().getFullYear() + (new Date().getMonth() >= 10 ? 1 : 0), YEAR_MIN), YEAR_MAX);
+
+let tab = "invest";
+try { tab = location.hash === "#mdph" ? "mdph" : (localStorage.getItem("plan-tab") === "mdph" ? "mdph" : "invest"); } catch (e) {}
+const phasesFor = () => PLAN.filter(p => (p.tab || "invest") === tab);
+
+function allIds() {
+  const ids = [];
+  phasesFor().forEach(p => { p.items.forEach(i => ids.push(i.id)); if (p.months) p.months.list.forEach((_, k) => ids.push(p.months.prefix + "-" + k)); });
+  if (tab === "invest") MILESTONES.forEach(m => ids.push(m.id));
+  return ids;
+}
+function firstOpen() {
+  for (const p of phasesFor()) {
+    for (const i of p.items) if (!isDone(i.id)) return { phase: p, label: i.t };
+    if (p.months) for (let k = 0; k < p.months.list.length; k++) if (!isDone(p.months.prefix + "-" + k)) return { phase: p, label: "Versement " + p.months.list[k] + " (" + p.months.label + ")" };
+  }
+  if (tab === "invest") for (const m of MILESTONES) if (!isDone(m.id)) return { phase: { when: m.date }, label: m.t };
+  return null;
+}
+
+function itemHTML(i) {
+  const d = isDone(i.id), at = d && state[i.id].at ? fmtDate(state[i.id].at) : "";
+  return `<li class="item${d ? " done" : ""}"><div class="item-row">
+    <input type="checkbox" id="c-${i.id}" data-id="${i.id}"${d ? " checked" : ""}>
+    <div><label for="c-${i.id}">${i.t}${i.key ? '<span class="tag key">clé</span>' : ""}${i.cond ? `<span class="tag cond">${i.cond}</span>` : ""}</label>
+    ${at ? `<div class="when">Fait le ${at}</div>` : ""}
+    ${i.how ? `<details><summary>Comment faire</summary><div class="how">${i.how}</div></details>` : ""}</div></div></li>`;
+}
+
+function render() {
+  const open = new Set([...document.querySelectorAll("details[open]")].map(d => d.closest(".item")?.querySelector("input")?.dataset.id));
+  let html = "";
+  phasesFor().forEach(p => {
+    const ids = p.items.map(i => i.id).concat(p.months ? p.months.list.map((_, k) => p.months.prefix + "-" + k) : []);
+    const n = ids.filter(isDone).length;
+    html += `<section class="phase${n === ids.length ? " complete" : ""}" aria-labelledby="h-${p.id}"><div class="rail"><span class="dot"></span></div><div class="phase-body">
+      <div class="phase-head"><div class="phase-meta"><span class="eyebrow">${p.when}</span><span class="count num">${n}/${ids.length}</span></div>
+      <h2 id="h-${p.id}">${p.title}</h2><p class="phase-intro">${p.intro}</p></div>
+      <ul class="items">${p.items.map(itemHTML).join("")}</ul>
+      ${p.months ? `<div><h3 style="margin-bottom:8px">Versements mensuels</h3><div class="months">${p.months.list.map((m, k) => { const id = p.months.prefix + "-" + k, d = isDone(id); return `<label class="month${d ? " done" : ""}"><input type="checkbox" data-id="${id}"${d ? " checked" : ""}><span>${m}<small>${p.months.label}</small></span></label>`; }).join("")}</div></div>` : ""}
+    </div></section>`;
+  });
+  if (tab === "invest") {
+  // routine annuelle
+  const yIds = ANNUAL.map(a => `y${year}-${a.id}`), yn = yIds.filter(isDone).length;
+  html += `<section class="phase" aria-labelledby="h-annual"><div class="rail"><span class="dot"></span></div><div class="phase-body">
+    <div class="phase-head"><div class="phase-meta"><span class="eyebrow">Chaque année, de 2027 à 2062</span><span class="count num">${yn}/${ANNUAL.length}</span></div>
+    <h2 id="h-annual">La routine annuelle</h2><p class="phase-intro">Une heure par an suffit. Choisis l'année, coche au fur et à mesure.</p></div>
+    <div class="year-nav"><button type="button" data-year="-1" aria-label="Année précédente">← Précédente</button><span class="year num">${year}</span><button type="button" data-year="1" aria-label="Année suivante">Suivante →</button><span class="age">tu auras ${year - BIRTH} ans</span></div>
+    <ul class="items">${ANNUAL.map(a => itemHTML({ id: `y${year}-${a.id}`, t: a.t })).join("")}</ul>
+  </div></section>`;
+  // jalons
+  const mn = MILESTONES.filter(m => isDone(m.id)).length;
+  html += `<section class="phase${mn === MILESTONES.length ? " complete" : ""}" aria-labelledby="h-ms"><div class="rail"><span class="dot"></span></div><div class="phase-body">
+    <div class="phase-head"><div class="phase-meta"><span class="eyebrow">2031 → 2062</span><span class="count num">${mn}/${MILESTONES.length}</span></div>
+    <h2 id="h-ms">Les grands jalons</h2><p class="phase-intro">Ce qui change avec le temps, et ce que tu fais à chaque étape.</p></div>
+    <ul class="items">${MILESTONES.map(m => itemHTML({ id: m.id, t: `<span class="num" style="color:var(--chestnut);font-size:13px">${m.date}</span><br>${m.t}`, how: `<p>${m.d}</p>` })).join("")}</ul>
+  </div></section>`;
+  }
+  document.getElementById("timeline").innerHTML = html;
+  document.querySelectorAll("[data-only]").forEach(el => { el.hidden = el.dataset.only !== tab; });
+  document.querySelectorAll("button[data-tab]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
+  open.forEach(id => { const el = id && document.querySelector(`input[data-id="${id}"]`); el?.closest(".item")?.querySelector("details")?.setAttribute("open", ""); });
+
+  const ids = allIds(), done = ids.filter(isDone).length, pct = Math.round(done / ids.length * 100);
+  document.getElementById("pct").textContent = pct + " %";
+  document.getElementById("bar").style.width = pct + "%";
+  const nx = firstOpen();
+  document.getElementById("next").innerHTML = nx ? `Prochaine étape · <b>${nx.label.replace(/<[^>]+>/g, " ")}</b> <span class="muted">(${nx.phase.when})</span>` : "Tout est coché. Bravo.";
+}
+
+document.addEventListener("change", e => { const id = e.target?.dataset?.id; if (id) toggle(id, e.target.checked); });
+document.addEventListener("click", e => {
+  const t = e.target.closest("button[data-tab]");
+  if (t) { tab = t.dataset.tab; try { localStorage.setItem("plan-tab", tab); } catch (err) {} render(); return; }
+  const b = e.target.closest("[data-year]"); if (!b) return;
+  year = Math.min(Math.max(year + Number(b.dataset.year), YEAR_MIN), YEAR_MAX); render();
+});
+
+/* ---------- simulateur ---------- */
+const eur = n => Math.round(n).toLocaleString("fr-FR") + " €";
+function simulate() {
+  const init = +document.getElementById("s-init").value, month = +document.getElementById("s-month").value;
+  const rate = +document.getElementById("s-rate").value / 100, stop = +document.getElementById("s-age").value;
+  document.getElementById("v-init").textContent = eur(init);
+  document.getElementById("v-month").textContent = eur(month) + " / mois";
+  document.getElementById("v-rate").textContent = rate * 100 + " % / an";
+  document.getElementById("v-age").textContent = stop + " ans (" + (BIRTH + stop) + ")";
+  const r = Math.pow(1 + rate, 1 / 12) - 1, startAge = 30; // fin 2028 ≈ 30 ans
+  const at = age => { let c = init; const m = Math.max(0, Math.round((age - startAge) * 12)); for (let k = 0; k < m; k++) c = c * (1 + r) + month; return c; };
+  const total = at(stop), versed = init + month * Math.max(0, (stop - startAge) * 12);
+  const cells = [
+    { k: "À 40 ans (2038)", v: at(40) },
+    { k: "À 50 ans (2048)", v: at(50) },
+    { k: `À ${stop} ans (${BIRTH + stop})`, v: total, main: true, s: `dont ${eur(versed)} versés` },
+    { k: "Revenu à 4 % par an", v: total * 0.04 / 12 * (1 - 0.186 * Math.max(0, (total - versed) / total)), s: "par mois, net des prélèvements sociaux (18,6 % sur la part de gains), en plus de la retraite publique", unit: " / mois" },
+  ];
+  document.getElementById("results").innerHTML = cells.map(c => `<div class="res${c.main ? " main" : ""}"><span class="k">${c.k}</span><span class="v">${eur(c.v)}${c.unit || ""}</span>${c.s ? `<span class="s">${c.s}</span>` : ""}</div>`).join("");
+}
+["s-init", "s-month", "s-rate", "s-age"].forEach(id => document.getElementById(id).addEventListener("input", simulate));
+
+/* ---------- démarrage ---------- */
+loadLocal(); render(); simulate(); setSync();
+(async () => {
+  try { db = window.claude && window.claude.use ? await window.claude.use("db") : null; } catch (e) { db = null; }
+  if (!db) { setSync(); return; }
+  mode = "db"; setSync();
+  db.collection("checks").onSnapshot(snap => {
+    snap.docs.forEach(d => { if (d.exists) state[d.id] = d.data(); });
+    saveLocal(); render();
+  }, () => { mode = "local"; setSync(); });
+})();
+</script>
+
+</body>
+</html>
