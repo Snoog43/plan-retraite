@@ -136,6 +136,13 @@ section.tool { display: flex; flex-direction: column; gap: 16px; }
 .rule { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
 .rule h3 { font-size: 16px; }
 .rule p { font-size: 14.5px; color: var(--muted); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.where-table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 520px; }
+.where-table th, .where-table td { text-align: left; padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+.where-table thead th { border-top: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.where-table td:nth-child(2) { font-weight: 600; white-space: nowrap; }
+.where-table td:nth-child(3) { color: var(--muted); }
+.rule-table { min-width: 0; }
 .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .tabs button { font: inherit; font-weight: 600; font-size: 15px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted); padding: 10px 14px; cursor: pointer; margin-bottom: -1px; }
 .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
@@ -167,6 +174,27 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
     <button type="button" role="tab" data-tab="invest" aria-selected="true">Protocole investissement</button>
     <button type="button" role="tab" data-tab="mdph" aria-selected="false">Démarches MDPH</button>
   </nav>
+
+  <section class="tool" aria-labelledby="where-title" data-only="invest">
+    <div class="phase-head">
+      <span class="eyebrow">Récapitulatif</span>
+      <h2 id="where-title">Où faire quoi</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table">
+        <thead><tr><th scope="col">Quoi</th><th scope="col">Où</th><th scope="col">Pourquoi</th></tr></thead>
+        <tbody>
+          <tr><td>Compte courant, carte, crédit immobilier</td><td>Crédit Agricole</td><td>On ne change rien : le crédit y est, et le contrat impose souvent d'y garder les revenus.</td></tr>
+          <tr><td>LEP, un chacun</td><td>Crédit Agricole</td><td>Même taux dans toutes les banques (2,5 %) : l'ouverture la plus rapide.</td></tr>
+          <tr><td>Livret A et LDDS</td><td>Crédit Agricole</td><td>Même taux partout (1,7 %). Pour le matelas au-delà des LEP.</td></tr>
+          <tr><td>PEA, un chacun</td><td>Bourse Direct</td><td>Achat automatique de WPEA chaque mois, sans frais et sans minimum.</td></tr>
+          <tr><td>Assurance-vie, une chacun</td><td>Linxea Spirit 2</td><td>0 % de frais sur versement, 0,5 %/an sur les ETF, bons fonds euros.</td></tr>
+          <tr><td>Virement mensuel</td><td>Depuis le Crédit Agricole</td><td>Le lendemain de la paie, vers les PEA et les assurances-vie.</td></tr>
+          <tr><td>PER, placements de la banque</td><td>Nulle part</td><td>PER inutile sans impôt à payer ; produits bancaires trop chargés en frais.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
   <div class="timeline" id="timeline"></div>
 
@@ -332,13 +360,20 @@ const PLAN = [
   },
   {
     id: "p3", when: "Retour à l'emploi de ton conjoint", title: "Passer en vitesse de croisière",
-    intro: "Quand les revenus reviennent, refais le budget : il doit rester une vraie marge après le crédit, les charges et la vie courante. On investit le reste de l'épargne sur 6 mois, puis 800 € par mois en automatique.",
+    intro: "Le montant mensuel dépend du nouveau salaire : on le calcule avec une règle simple, une fois le budget refait. On investit aussi le reste de l'épargne sur 6 mois.",
     months: { prefix: "m3", label: "≈ 2 100 € investis", list: ["Mois 1","Mois 2","Mois 3","Mois 4","Mois 5","Mois 6"] },
     items: [
       { id: "budget-2", t: "Refaire le budget avec le nouveau salaire",
         how: `<p>Même méthode qu'en phase 1. Le matelas peut redescendre à 6 mois de dépenses : l'excédent rejoint les investissements.</p>` },
-      { id: "auto-800", key: true, t: "Mettre en place le virement automatique de 800 €/mois",
-        how: `<p>Le lendemain de la paie, depuis le Crédit Agricole :</p><ul><li><span class="num">280 €</span> vers chaque PEA : monte l'investissement programmé de 250 à 280 €, l'achat se fait tout seul ;</li><li><span class="num">120 €</span> vers chaque assurance-vie, en versement programmé.</li></ul><p class="muted">Garde environ 500 € de marge par mois pour la vie et les imprévus.</p>` },
+      { id: "auto-800", key: true, t: "Calculer le versement mensuel et le mettre en automatique",
+        how: `<p><b>Règle :</b> versement mensuel = salaire net − dépenses mensuelles réelles du foyer (environ 1 600 €, crédit compris) − 500 € de marge.</p>
+<div class="table-wrap"><table class="where-table rule-table"><thead><tr><th scope="col">Salaire net</th><th scope="col">Versement</th><th scope="col">Répartition</th></tr></thead><tbody>
+<tr><td>2 000 €</td><td>0 à 100 €</td><td>Surtout de la marge ; un PEA à la fois</td></tr>
+<tr><td>2 500 €</td><td>≈ 400 €</td><td>140 € par PEA, 60 € par assurance-vie</td></tr>
+<tr><td>3 000 €</td><td>≈ 800 €</td><td>280 € par PEA, 120 € par assurance-vie</td></tr>
+<tr><td>+ AAH accordée</td><td>≈ +400 €</td><td>+200 € par PEA</td></tr>
+</tbody></table></div>
+<ul><li>Environ 70 % sur les deux PEA (investissement programmé chez Bourse Direct) et 30 % sur les deux assurances-vie.</li><li>Linxea demande au moins 100 € par versement programmé : sous ce seuil, tout va aux PEA.</li><li>Le virement part du Crédit Agricole le lendemain de la paie. Remplace les 1 600 € par votre vrai chiffre de dépenses.</li></ul>` },
       { id: "lep-recheck", t: "Revérifier l'éligibilité au LEP",
         how: `<p>Avec un revenu plus élevé, le droit au LEP peut disparaître. La banque vérifie chaque année ; si vous n'y avez plus droit, l'argent passe sur le Livret A ou le LDDS.</p>` },
       { id: "per-decide", cond: "si TMI ≥ 30 %", t: "Décider du PER",
