@@ -147,6 +147,9 @@ section.tool { display: flex; flex-direction: column; gap: 16px; }
 .tabs button { font: inherit; font-weight: 600; font-size: 15px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted); padding: 10px 14px; cursor: pointer; margin-bottom: -1px; }
 .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
 .tabs button:hover { color: var(--ink); }
+.tabs button[data-tab="parents"] { margin-left: auto; color: var(--chestnut); }
+.tabs button[data-tab="parents"][aria-selected="true"] { border-bottom-color: var(--chestnut); color: var(--ink); }
+@media (max-width: 560px) { .tabs button[data-tab="parents"] { margin-left: 0; } }
 footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 18px; }
 @media (prefers-reduced-motion: reduce) { .bar > span { transition: none; } }
 @media (max-width: 480px) { .milestones li { grid-template-columns: 1fr; gap: 2px; } }
@@ -157,8 +160,8 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
 <div class="wrap">
   <header>
     <span class="eyebrow">Plan sur 36 ans</span>
-    <h1>Plan retraite du foyer</h1>
-    <p class="lede">Le plan pas à pas pour transformer vos économies en capital retraite, en passant d'abord par une année prudente tant que les revenus du foyer sont réduits. Coche chaque étape quand elle est faite : ta progression est enregistrée.</p>
+    <h1 id="page-title">Plan retraite du foyer</h1>
+    <p class="lede" id="lede">Le plan pas à pas pour transformer vos économies en capital retraite, en passant d'abord par une année prudente tant que les revenus du foyer sont réduits. Coche chaque étape quand elle est faite : ta progression est enregistrée.</p>
         <div class="progress-card" aria-live="polite">
       <div class="progress-row">
         <strong>Progression</strong>
@@ -173,6 +176,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
   <nav class="tabs" role="tablist" aria-label="Protocoles">
     <button type="button" role="tab" data-tab="invest" aria-selected="true">Protocole investissement</button>
     <button type="button" role="tab" data-tab="mdph" aria-selected="false">Démarches MDPH</button>
+    <button type="button" role="tab" data-tab="parents" aria-selected="false">Plan héritage 50+</button>
   </nav>
 
   <section class="tool" aria-labelledby="where-title" data-only="invest">
@@ -191,6 +195,27 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
           <tr><td>Assurance-vie, une chacun</td><td>Linxea Spirit 2</td><td>0 % de frais sur versement, 0,5 %/an sur les ETF, bons fonds euros.</td></tr>
           <tr><td>Virement mensuel</td><td>Depuis le Crédit Agricole</td><td>Le lendemain de la paie, vers les PEA et les assurances-vie.</td></tr>
           <tr><td>PER, placements de la banque</td><td>Nulle part</td><td>PER inutile sans impôt à payer ; produits bancaires trop chargés en frais.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tool" aria-labelledby="where-m-title" data-only="parents">
+    <div class="phase-head">
+      <span class="eyebrow">Récapitulatif · 100 000 € d'héritage, la cinquantaine</span>
+      <h2 id="where-m-title">Où faire quoi</h2>
+      <p class="phase-intro">Répartition « équilibrée » proposée par défaut : environ 60 % en actions mondiales, 40 % en placements sûrs. À ajuster selon les vérifications de la première étape.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table">
+        <thead><tr><th scope="col">Quoi</th><th scope="col">Où</th><th scope="col">Combien (exemple)</th></tr></thead>
+        <tbody>
+          <tr><td>Épargne de précaution (si elle n'existe pas déjà)</td><td>Leur banque : Livret A, LDDS</td><td>10 000 €</td></tr>
+          <tr><td>PEA au nom de la personne qui a hérité, ETF Monde (WPEA)</td><td>Bourse Direct</td><td>35 000 €, investis sur 12 mois</td></tr>
+          <tr><td>Assurance-vie au nom de la personne qui a hérité : fonds euros</td><td>Linxea Spirit 2</td><td>30 000 €, tout de suite</td></tr>
+          <tr><td>Assurance-vie : ETF Monde</td><td>Linxea Spirit 2 (même contrat)</td><td>25 000 €, investis sur 12 mois</td></tr>
+          <tr><td>PER</td><td>En ligne, seulement si tranche d'impôt ≥ 30 %</td><td>Avec les revenus, pas avec l'héritage</td></tr>
+          <tr><td>Produits proposés par la banque</td><td>Nulle part</td><td>Frais d'entrée et de gestion trop élevés</td></tr>
         </tbody>
       </table>
     </div>
@@ -231,7 +256,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
     </div>
   </section>
 
-  <section class="tool" aria-labelledby="rules-title" data-only="invest">
+  <section class="tool" aria-labelledby="rules-title" data-only="invest parents">
     <div class="phase-head">
       <span class="eyebrow">À relire en cas de doute</span>
       <h2 id="rules-title">Les règles du plan</h2>
@@ -380,6 +405,72 @@ const PLAN = [
         how: `<p>Le PER réduit l'impôt du montant versé fois votre TMI, mais bloque l'argent jusqu'à 64 ans. Il ne finance jamais la période avant 64 ans : PEA et assurance-vie s'en chargent.</p>` },
     ]
   },
+  {
+    id: "m0", tab: "parents", when: "Avant de placer", title: "Les vérifications",
+    intro: "Six points qui peuvent changer la répartition. Une heure de travail avec eux, avis d'impôt et relevés en main.",
+    items: [
+      { id: "m-propre", key: true, t: "Garder la trace que l'argent vient d'un héritage",
+        how: `<p>Mariés sous le régime légal (communauté), un héritage reste un <b>bien propre</b> de la personne qui a hérité. Pour le garder ainsi :</p><ul><li>conserver l'attestation du notaire qui montre le montant reçu ;</li><li>ouvrir les placements <b>à son nom</b> et les alimenter directement avec cet argent ;</li><li>si elle veut en donner une partie à son mari, c'est une donation entre époux : en parler au notaire de la succession, qui conseille gratuitement sur ce point lors du règlement.</li></ul>` },
+      { id: "m-dette", t: "Vérifier s'il reste un crédit, et à quel taux",
+        how: `<p>Un crédit à la consommation ou un crédit immobilier au-dessus d'environ 4 % : le rembourser en partie rapporte un gain sûr, souvent meilleur que les placements. Sous 2-3 %, on le garde et on place.</p>` },
+      { id: "m-precaution", t: "Vérifier l'épargne de précaution",
+        how: `<p>Il faut 3 à 6 mois de dépenses disponibles sur Livret A ou LDDS (1,7 %), ou sur LEP s'ils y ont droit (2,5 %, revenu fiscal de référence sous 35 326 € pour un couple). Si elle existe déjà, les 10 000 € prévus vont aux placements.</p>` },
+      { id: "m-retraite", t: "Noter leur date de départ prévue et consulter leurs relevés de carrière",
+        how: `<p>Sur info-retraite.fr, chacun voit ses trimestres et une estimation de pension. L'argent dont ils auront besoin dans les 5 à 8 ans doit rester en placements sûrs (fonds euros), pas en actions.</p>` },
+      { id: "m-tmi", t: "Lire leur tranche d'imposition sur l'avis d'impôt",
+        how: `<p>À 30 % ou plus, un PER alimenté avec leurs revenus réduit l'impôt chaque année ; à leur âge, l'argent n'y est bloqué que jusqu'à la retraite. À 0 ou 11 %, pas de PER.</p>` },
+      { id: "m-risque", key: true, t: "Choisir le niveau de risque avec eux",
+        how: `<p>La question qui décide : « si les 100 000 € tombaient à 75 000 € pendant un an, est-ce que vous tiendriez sans rien vendre ? »</p>
+<div class="table-wrap"><table class="where-table rule-table"><thead><tr><th scope="col">Profil</th><th scope="col">Actions / sûr</th><th scope="col">Dans 10 ans (≈)</th><th scope="col">Revenu sur 25 ans</th></tr></thead><tbody>
+<tr><td>Prudent</td><td>40 % / 60 %</td><td>117 000 €</td><td>≈ 560 €/mois</td></tr>
+<tr><td><b>Équilibré (proposé)</b></td><td>60 % / 40 %</td><td>127 000 €</td><td>≈ 610 €/mois</td></tr>
+<tr><td>Dynamique</td><td>75 % / 25 %</td><td>134 000 €</td><td>≈ 640 €/mois</td></tr>
+</tbody></table></div>
+<p class="muted">Sur 90 000 € placés, en euros d'aujourd'hui : actions à 5 %/an et fonds euros à 0,8 %/an après inflation, puis capital consommé sur 25 ans à 3 %/an. Projections, pas garanties.</p>` },
+      { id: "m-banque", t: "Prévoir de dire non à la banque",
+        how: `<p>Après un héritage, la banque appelle presque toujours pour proposer son assurance-vie, son PER ou un placement « géré ». Frais d'entrée de 2 à 4 % et frais annuels élevés : sur 100 000 €, la différence se compte en dizaines de milliers d'euros. Réponse simple : « c'est déjà placé, merci ».</p>` },
+    ]
+  },
+  {
+    id: "m1", tab: "parents", when: "Mois 1", title: "Ouvrir les placements",
+    intro: "Tout s'ouvre en ligne, au nom de la personne qui a hérité puisque l'argent vient de son héritage.",
+    items: [
+      { id: "m-av", key: true, t: "Ouvrir son assurance-vie Linxea Spirit 2 et y placer 30 000 € en fonds euros",
+        how: `<ol><li>Souscription en ligne sur linxea.com : 0 % de frais sur versement, 0,50 %/an sur les ETF. Fonds euros à 3,08–3,26 % en 2025, garantis à 98 %.</li><li>Versement initial : 55 000 €. Tout de suite : 30 000 € sur le fonds euros. Les 25 000 € restants attendent sur le fonds euros et basculent chaque mois vers l'ETF Monde.</li><li>Clause bénéficiaire : « mon conjoint, à défaut mes enfants, nés ou à naître, vivants ou représentés, par parts égales ».</li></ol>
+<p class="muted">Alternative équivalente : Lucya Cardif (Placement-direct), plus de choix de supports.</p>` },
+      { id: "m-pea", key: true, t: "Ouvrir son PEA chez Bourse Direct",
+        how: `<ol><li>Ouverture en ligne, versement de 35 000 € (plafond 150 000 €).</li><li>Investissement programmé mensuel en <b>WPEA</b> (ISIN IE0002XZSHO1, 0,20 %/an), sans frais.</li><li>Les 5 ans du PEA tombent vers 58 ans : ensuite, les gains ne paient plus d'impôt sur le revenu (prélèvements sociaux 18,6 %).</li></ol>` },
+      { id: "m-mari", cond: "avec son propre argent", t: "Un PEA pour son mari",
+        how: `<p>Utile pour doubler le plafond ou s'il a lui-même de l'épargne. Avec l'argent de l'héritage, ce serait une donation : voir l'étape du notaire.</p>` },
+      { id: "m-per", cond: "si tranche ≥ 30 %", t: "Ouvrir un PER en ligne et l'alimenter avec leurs revenus",
+        how: `<p>Par exemple 200 à 500 € par mois, déductibles du revenu imposable dans la limite du plafond indiqué sur leur avis d'impôt. Bloqué jusqu'à la retraite (sauf achat de résidence principale). Pas avec l'héritage : il est plus utile en PEA et assurance-vie, disponibles à tout moment.</p>` },
+    ]
+  },
+  {
+    id: "m2", tab: "parents", when: "Mois 1 à 12", title: "Investir la partie actions progressivement",
+    intro: "60 000 € à mettre en actions, étalés sur 12 mois pour ne pas tout investir la veille d'une baisse : environ 2 900 € par mois dans le PEA et 2 100 € par mois de l'assurance-vie vers l'ETF Monde.",
+    months: { prefix: "m-mois", label: "≈ 5 000 € investis", list: ["Mois 1","Mois 2","Mois 3","Mois 4","Mois 5","Mois 6","Mois 7","Mois 8","Mois 9","Mois 10","Mois 11","Mois 12"] },
+    items: [
+      { id: "m-arbitrage", t: "Programmer le passage mensuel fonds euros → ETF dans l'assurance-vie",
+        how: `<p>Linxea propose des arbitrages programmés gratuits : environ 2 100 € par mois du fonds euros vers un ETF MSCI World, pendant 12 mois. Dans le PEA, l'investissement programmé fait la même chose.</p>` },
+      { id: "m-calme", t: "Règle : ne rien changer si la bourse baisse pendant ces 12 mois",
+        how: `<p>Une baisse pendant l'étalement est une bonne nouvelle : les achats suivants se font moins cher. On garde le calendrier.</p>` },
+    ]
+  },
+  {
+    id: "m3", tab: "parents", when: "Ensuite, jusqu'à la retraite et au-delà", title: "Laisser travailler, puis sécuriser",
+    intro: "Une revue par an suffit. Les grandes dates changent la façon de retirer l'argent.",
+    items: [
+      { id: "m-revue", t: "Une fois par an : vérifier la répartition et la remettre à 60/40",
+        how: `<p>Si les actions ont beaucoup monté, on en bascule une partie vers le fonds euros dans l'assurance-vie (sans impôt à l'intérieur du contrat), et inversement.</p>` },
+      { id: "m-secu", t: "À partir de 60 ans : sécuriser 5 années de dépenses",
+        how: `<p>Basculer progressivement vers le fonds euros l'équivalent de 5 ans du complément de revenu prévu. On ne vend jamais d'actions pendant une baisse pour vivre.</p>` },
+      { id: "m-8ans", t: "Après 8 ans (vers 2035) : retraits de l'assurance-vie avec l'abattement",
+        how: `<p>Chaque année, les gains retirés ne paient pas d'impôt sur le revenu jusqu'à 9 200 € pour un couple marié (puis 7,5 %). Les prélèvements sociaux de l'assurance-vie restent à 17,2 %. C'est la source idéale pour compléter la retraite.</p>` },
+      { id: "m-transmission", t: "Comprendre ce que l'assurance-vie transmet",
+        how: `<ul><li>Le conjoint ne paie aucun droit de succession.</li><li>Pour les sommes versées avant 70 ans, chaque enfant bénéficiaire reçoit jusqu'à 152 500 € sans droits, en dehors de la succession.</li><li>D'où l'intérêt de faire les versements maintenant, bien avant 70 ans.</li></ul>` },
+    ]
+  },
 ];
 
 const MILESTONES = [
@@ -434,7 +525,14 @@ const isDone = id => !!(state[id] && state[id].done);
 let year = Math.min(Math.max(new Date().getFullYear() + (new Date().getMonth() >= 10 ? 1 : 0), YEAR_MIN), YEAR_MAX);
 
 let tab = "invest";
-try { tab = location.hash === "#mdph" ? "mdph" : (localStorage.getItem("plan-tab") === "mdph" ? "mdph" : "invest"); } catch (e) {}
+const TABS = ["invest", "mdph", "parents"];
+try {
+  const h = location.hash === "#mere" ? "parents" : location.hash.slice(1);
+  const saved = localStorage.getItem("plan-tab");
+  tab = TABS.includes(h) ? h : (TABS.includes(saved) ? saved : "invest");
+} catch (e) {}
+const LEDE = document.getElementById("lede").innerHTML;
+const PARENTS_LEDE = "Un plan séparé pour placer 100&nbsp;000&nbsp;€ d'héritage dans la cinquantaine, avec une dizaine d'années avant la retraite puis 25 ans ou plus de retraite. Les cases cochées ici sont enregistrées comme celles du plan principal.";
 const phasesFor = () => PLAN.filter(p => (p.tab || "invest") === tab);
 
 function allIds() {
@@ -492,7 +590,9 @@ function render() {
   </div></section>`;
   }
   document.getElementById("timeline").innerHTML = html;
-  document.querySelectorAll("[data-only]").forEach(el => { el.hidden = el.dataset.only !== tab; });
+  document.querySelectorAll("[data-only]").forEach(el => { el.hidden = !el.dataset.only.split(" ").includes(tab); });
+  document.getElementById("page-title").textContent = tab === "parents" ? "Plan héritage 50+" : "Plan retraite du foyer";
+  document.getElementById("lede").innerHTML = tab === "parents" ? PARENTS_LEDE : LEDE;
   document.querySelectorAll("button[data-tab]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
   open.forEach(id => { const el = id && document.querySelector(`input[data-id="${id}"]`); el?.closest(".item")?.querySelector("details")?.setAttribute("open", ""); });
 
