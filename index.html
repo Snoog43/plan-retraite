@@ -22,6 +22,9 @@
   --warn: #9a5b00;
   --warn-soft: #fbf0dc;
   --done: #2f6b57;
+  --s1: #2a78d6;          /* séries du graphique (palette validée) */
+  --s2: #eb6834;
+  --s3: #1baf7a;
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
@@ -30,12 +33,14 @@
   :root:not([data-theme="light"]) {
     --bg: #131a18; --surface: #1b2421; --ink: #e4ebe8; --muted: #9aa8a3; --line: #2e3a36;
     --accent: #6fbf9f; --accent-soft: #1f3a31; --chestnut: #d9925f; --warn: #e3a64a; --warn-soft: #3a2c14; --done: #6fbf9f;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #131a18; --surface: #1b2421; --ink: #e4ebe8; --muted: #9aa8a3; --line: #2e3a36;
   --accent: #6fbf9f; --accent-soft: #1f3a31; --chestnut: #d9925f; --warn: #e3a64a; --warn-soft: #3a2c14; --done: #6fbf9f;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -143,6 +148,20 @@ section.tool { display: flex; flex-direction: column; gap: 16px; }
 .where-table td:nth-child(2) { font-weight: 600; white-space: nowrap; }
 .where-table td:nth-child(3) { color: var(--muted); }
 .rule-table { min-width: 0; }
+.chart-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { display: inline-block; width: 18px; height: 0; border-top: 2px solid; }
+.chart-wrap { position: relative; }
+.chart-wrap svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
+.chart-wrap .axis { fill: var(--muted); font-size: 12px; font-family: var(--f-body); font-variant-numeric: tabular-nums; }
+.chart-wrap .grid { stroke: var(--line); stroke-width: 1; }
+.chart-wrap .dlabel { font-size: 12px; font-family: var(--f-body); fill: var(--ink); }
+.chart-tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px; box-shadow: 0 4px 14px rgba(0,0,0,.12); min-width: 190px; }
+.chart-tip b { display: block; margin-bottom: 4px; }
+.chart-tip div { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.proj-table td, .proj-table th { white-space: nowrap; }
+.proj-table tr.hl td { background: var(--accent-soft); }
 .sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
 .source-group { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .source-group h3 { font-size: 15px; }
@@ -227,6 +246,30 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
         </tbody>
       </table>
     </div>
+  </section>
+
+  <section class="tool" aria-labelledby="graph-m-title" data-only="parents">
+    <div class="phase-head">
+      <span class="eyebrow">Simulation · 100 000 € placés, versements de juin 2027 à 65 ans</span>
+      <h2 id="graph-m-title">Capital à 65 ans selon le versement mensuel</h2>
+      <p class="phase-intro">Euros d'aujourd'hui, avant prélèvements sociaux sur les gains (environ −7 %). Actions à 5 %/an et fonds euros à 1,3 %/an après inflation, rééquilibrage chaque année. Projections, pas garanties. Survole le graphique pour voir les montants.</p>
+    </div>
+    <div class="chart-card">
+      <div class="legend" aria-hidden="true">
+        <span><i style="border-color: var(--s1)"></i>Glissant 80 → 50 % (proposé)</span>
+        <span><i style="border-color: var(--s1); border-top-style: dashed"></i>Glissant, si krach −35 % juste avant 65 ans</span>
+        <span><i style="border-color: var(--s2)"></i>100 % actions</span>
+        <span><i style="border-color: var(--s3)"></i>Prudent 40 %</span>
+      </div>
+      <div class="chart-wrap" id="proj-chart"></div>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table rule-table proj-table">
+        <thead><tr><th scope="col">Par mois</th><th scope="col">Total versé</th><th scope="col">Prudent 40 %</th><th scope="col">Équilibré 60 %</th><th scope="col">Dynamique 75 %</th><th scope="col">100 % actions</th><th scope="col">Glissant ★</th><th scope="col">Glissant si krach</th><th scope="col">Revenu sur 25 ans (glissant)</th></tr></thead>
+        <tbody id="proj-body"></tbody>
+      </table>
+    </div>
+    <p class="phase-intro">Chaque 100 € par mois en plus ajoute environ 17 000 € à 65 ans (stratégie glissante), soit environ 80 € par mois de revenu en plus pendant 25 ans. Le revenu suppose de consommer le capital sur 25 ans à 3 %/an.</p>
   </section>
 
   <section class="tool" aria-labelledby="proj-m-title" data-only="compare">
@@ -882,6 +925,61 @@ function simulate() {
   document.getElementById("results").innerHTML = cells.map(c => `<div class="res${c.main ? " main" : ""}"><span class="k">${c.k}</span><span class="v">${eur(c.v)}${c.unit || ""}</span>${c.s ? `<span class="s">${c.s}</span>` : ""}</div>`).join("");
 }
 ["s-init", "s-month", "s-rate", "s-age"].forEach(id => document.getElementById(id).addEventListener("input", simulate));
+
+/* ---------- projection des parents : tableau + graphique ---------- */
+const PROJ = [{"m":800,"prudent":266000,"equilibre":283000,"dynamique":297000,"actions100":321000,"glissant":296000,"glissant_krach":238000,"rente":1410,"verse":209600},{"m":900,"prudent":282000,"equilibre":300000,"dynamique":314000,"actions100":340000,"glissant":313000,"glissant_krach":252000,"rente":1500,"verse":223300},{"m":1000,"prudent":298000,"equilibre":317000,"dynamique":332000,"actions100":358000,"glissant":330000,"glissant_krach":265000,"rente":1580,"verse":237000},{"m":1100,"prudent":314000,"equilibre":334000,"dynamique":349000,"actions100":376000,"glissant":347000,"glissant_krach":279000,"rente":1660,"verse":250700},{"m":1200,"prudent":330000,"equilibre":350000,"dynamique":366000,"actions100":394000,"glissant":364000,"glissant_krach":293000,"rente":1740,"verse":264400},{"m":1300,"prudent":346000,"equilibre":367000,"dynamique":384000,"actions100":413000,"glissant":381000,"glissant_krach":307000,"rente":1830,"verse":278100},{"m":1400,"prudent":362000,"equilibre":384000,"dynamique":401000,"actions100":431000,"glissant":399000,"glissant_krach":321000,"rente":1910,"verse":291800},{"m":1500,"prudent":378000,"equilibre":401000,"dynamique":418000,"actions100":449000,"glissant":416000,"glissant_krach":335000,"rente":1990,"verse":305500},{"m":1600,"prudent":395000,"equilibre":417000,"dynamique":436000,"actions100":468000,"glissant":433000,"glissant_krach":349000,"rente":2070,"verse":319200},{"m":1700,"prudent":411000,"equilibre":434000,"dynamique":453000,"actions100":486000,"glissant":450000,"glissant_krach":363000,"rente":2150,"verse":332900},{"m":1800,"prudent":427000,"equilibre":451000,"dynamique":470000,"actions100":504000,"glissant":467000,"glissant_krach":377000,"rente":2240,"verse":346600},{"m":1900,"prudent":443000,"equilibre":468000,"dynamique":488000,"actions100":523000,"glissant":485000,"glissant_krach":390000,"rente":2320,"verse":360300},{"m":2000,"prudent":459000,"equilibre":485000,"dynamique":505000,"actions100":541000,"glissant":502000,"glissant_krach":404000,"rente":2400,"verse":374000}];
+const fmtK = n => Math.round(n / 1000).toLocaleString("fr-FR") + " k€";
+function renderProjTable() {
+  document.getElementById("proj-body").innerHTML = PROJ.map(r => `<tr${r.m === 1500 ? ' class="hl"' : ""}><td><b>${eur(r.m)}</b></td><td class="num">${eur(r.verse)}</td><td class="num">${eur(r.prudent)}</td><td class="num">${eur(r.equilibre)}</td><td class="num">${eur(r.dynamique)}</td><td class="num">${eur(r.actions100)}</td><td class="num"><b>${eur(r.glissant)}</b></td><td class="num">${eur(r.glissant_krach)}</td><td class="num">${eur(r.rente)}/mois</td></tr>`).join("");
+}
+function renderProjChart() {
+  const W = 720, H = 380, L = 64, R = 170, T = 16, B = 40;
+  const x0 = 800, x1 = 2000, y0 = 200000, y1 = 560000;
+  const X = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  const Y = v => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
+  const series = [
+    { k: "actions100", c: "var(--s2)", label: "100 % actions" },
+    { k: "glissant", c: "var(--s1)", label: "Glissant ★" },
+    { k: "prudent", c: "var(--s3)", label: "Prudent 40 %" },
+    { k: "glissant_krach", c: "var(--s1)", label: "Glissant si krach", dash: "6 5" },
+  ];
+  let g = "";
+  for (let v = 200000; v <= 550000; v += 50000) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}"/><text class="axis" x="${L - 8}" y="${Y(v) + 4}" text-anchor="end">${fmtK(v)}</text>`;
+  for (let v = 800; v <= 2000; v += 200) g += `<text class="axis" x="${X(v)}" y="${H - B + 20}" text-anchor="middle">${v.toLocaleString("fr-FR")} €</text>`;
+  g += `<text class="axis" x="${(L + W - R) / 2}" y="${H - 4}" text-anchor="middle">Versement mensuel</text>`;
+  const ends = series.map(s => ({ s, y: Y(PROJ[PROJ.length - 1][s.k]) })).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 16) ends[i].y = ends[i - 1].y + 16;
+  series.forEach(s => {
+    const d = PROJ.map((r, i) => `${i ? "L" : "M"}${X(r.m).toFixed(1)},${Y(r[s.k]).toFixed(1)}`).join(" ");
+    g += `<path d="${d}" fill="none" stroke="${s.c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"${s.dash ? ` stroke-dasharray="${s.dash}"` : ""}/>`;
+  });
+  ends.forEach(e => { g += `<text class="dlabel" x="${W - R + 10}" y="${e.y + 4}">${e.s.label} · ${fmtK(PROJ[PROJ.length - 1][e.s.k])}</text>`; });
+  g += `<line id="pc-cross" class="grid" y1="${T}" y2="${H - B}" stroke-dasharray="3 3" visibility="hidden"/><g id="pc-dots"></g>`;
+  g += `<rect id="pc-hit" x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent"/>`;
+  const wrap = document.getElementById("proj-chart");
+  wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Capital à 65 ans selon le versement mensuel, de 800 à 2 000 euros, pour quatre scénarios. Détail dans le tableau ci-dessous.">${g}</svg><div class="chart-tip" hidden></div>`;
+  const svg = wrap.querySelector("svg"), tip = wrap.querySelector(".chart-tip");
+  const cross = svg.querySelector("#pc-cross"), dots = svg.querySelector("#pc-dots");
+  const show = ev => {
+    const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const m = Math.min(2000, Math.max(800, Math.round((x0 + (p.x - L) / (W - L - R) * (x1 - x0)) / 100) * 100));
+    const r = PROJ.find(q => q.m === m), cx = X(m);
+    cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible");
+    dots.innerHTML = series.map(s => `<circle cx="${cx}" cy="${Y(r[s.k])}" r="4.5" fill="${s.c}" stroke="var(--surface)" stroke-width="2"/>`).join("");
+    tip.innerHTML = `<b>${eur(m)} par mois</b>` + [...series].sort((a, b) => r[b.k] - r[a.k]).map(s => `<div><span>${s.label}</span><span>${eur(r[s.k])}</span></div>`).join("") + `<div><span>Total versé</span><span>${eur(r.verse)}</span></div>`;
+    tip.hidden = false;
+    const box = wrap.getBoundingClientRect(), left = ev.clientX - box.left;
+    tip.style.left = Math.min(Math.max(0, left + 14), box.width - tip.offsetWidth) + "px";
+    tip.style.top = "8px";
+  };
+  const hide = () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); dots.innerHTML = ""; };
+  svg.querySelector("#pc-hit").addEventListener("pointermove", show);
+  svg.querySelector("#pc-hit").addEventListener("pointerdown", show);
+  svg.addEventListener("pointerleave", hide);
+}
+renderProjTable();
+renderProjChart();
 
 /* ---------- démarrage ---------- */
 loadLocal(); render(); simulate(); setSync();
