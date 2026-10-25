@@ -266,6 +266,29 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
     </div>
   </section>
 
+  <section class="tool" aria-labelledby="cmp-fe-title" data-only="compare">
+    <div class="phase-head">
+      <span class="eyebrow">Classement · argent sûr (fonds euros)</span>
+      <h2 id="cmp-fe-title">Meilleurs fonds euros 2025</h2>
+      <p class="phase-intro">Pour la partie sans risque (utile surtout pour la personne qui a hérité). Les mutuelles et associations servent souvent plus que les assureurs en ligne, mais ont parfois des frais sur versement : 2 % de frais d'entrée effacent plus de 7 mois de rendement.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table">
+        <thead><tr><th scope="col">#</th><th scope="col">Contrat</th><th scope="col">Fonds euros 2025</th><th scope="col">Frais versement</th><th scope="col">À retenir</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Carac Épargne Patrimoine (mutuelle)</td><td><b>3,55 %</b></td><td>0 %</td><td>Sans obligation d'unités de compte. 500 € minimum, versements réguliers dès 50 €/mois. Attention : l'ancien contrat Carac Profiléo, lui, avait jusqu'à 3,5 % de frais.</td></tr>
+          <tr><td>2</td><td>La France Mutualiste · Actépargne 2</td><td>3,50 %</td><td>0 %</td><td>Sans obligation d'unités de compte. Frais d'arbitrage 0,45 %.</td></tr>
+          <tr><td>3</td><td>Garance Épargne (mutuelle)</td><td>3,50 %</td><td>jusqu'à 1 %</td><td>Taux stable depuis 2023.</td></tr>
+          <tr><td>4</td><td>MIF · Ampli Grain 9</td><td>3,45 %</td><td>≈ 2 % (MIF)</td><td>Bon taux, mais frais d'entrée.</td></tr>
+          <tr><td>5</td><td>BoursoBank Vie · Euro Exclusif</td><td>3,21 %</td><td>0 %</td><td>Bon compromis tout en ligne.</td></tr>
+          <tr><td>6</td><td>Linxea Spirit 2</td><td>3,08 – 3,26 %</td><td>0 %</td><td>Un peu moins bon sur le fonds euros, mais le meilleur pour les ETF : un seul contrat pour tout.</td></tr>
+          <tr><td>7</td><td>Afer (association)</td><td>2,65 %</td><td>n.c.</td><td>Nouveau fonds Euro Génération à 4,05 % la première année, sous conditions.</td></tr>
+          <tr><td>—</td><td>Moyenne du marché</td><td>≈ 2,6 %</td><td>—</td><td>Asac-Fapes 2,2 – 2,3 % (bonus si unités de compte) ; banques traditionnelles 2,15 – 2,9 %.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <section class="tool" aria-labelledby="cmp-pea-title" data-only="compare">
     <div class="phase-head">
       <span class="eyebrow">Classement · achats mensuels d'ETF</span>
@@ -279,6 +302,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
           <tr><td>1</td><td>Bourse Direct</td><td>0 € (investissement programmé)</td><td>Grille dégressive</td><td>Choix du plan : achats automatiques sur ETF sans frais ni minimum depuis mai 2026. Courtier français.</td></tr>
           <tr><td>2</td><td>BoursoBank</td><td>1,99 €</td><td>0 € sur WPEA dès 500 €</td><td>Le plus cité sur Reddit. Idéal si on achète par ordres d'au moins 500 €.</td></tr>
           <tr><td>3</td><td>Saxo</td><td>2 € (0,08 %, minimum 2 €)</td><td>0,08 %</td><td>Promotion sur des ETF Amundi jusqu'à fin 2026.</td></tr>
+          <tr><td>★</td><td>XTB</td><td>0 € (ordre manuel)</td><td>0 € jusqu'à 100 000 €/mois</td><td>Pas d'investissement automatique : il faut passer l'ordre chaque mois. Courtier étranger.</td></tr>
           <tr><td>4</td><td>Fortuneo</td><td>≈ 0,35 – 0,5 %</td><td>Forfaits</td><td>Le 1er ordre mensuel n'est plus gratuit depuis 2025.</td></tr>
           <tr><td>5</td><td>Trade Republic</td><td>0 € (plan programmé)</td><td>1 €</td><td>Le moins cher, mais courtier étranger : pas de déclaration fiscale pré-remplie, service client et transferts de PEA critiqués.</td></tr>
           <tr><td>6</td><td>Interactive Brokers</td><td>1,25 € minimum</td><td>0,05 %</td><td>Pour gros montants et investisseurs avertis ; déclaration fiscale à faire soi-même.</td></tr>
@@ -526,7 +550,7 @@ const PLAN = [
     items: [
       { id: "m-av", key: true, t: "Ouvrir son assurance-vie Linxea Spirit 2 et y placer 30 000 € en fonds euros",
         how: `<ol><li>Souscription en ligne sur linxea.com : 0 % de frais sur versement, 0,50 %/an sur les ETF. Fonds euros à 3,08–3,26 % en 2025, garantis à 98 %.</li><li>Versement initial : 55 000 €. Tout de suite : 30 000 € sur le fonds euros. Les 25 000 € restants attendent sur le fonds euros et basculent chaque mois vers l'ETF Monde.</li><li>Clause bénéficiaire : « mon conjoint, à défaut mes enfants, nés ou à naître, vivants ou représentés, par parts égales ».</li></ol>
-<p class="muted">Alternative équivalente : Lucya Cardif (Placement-direct), plus de choix de supports. Variante possible : mettre les 30 000 € sûrs chez La France Mutualiste (Actépargne 2, fonds euros à 3,50 % en 2025) et garder Linxea pour la partie ETF ; gain d'environ 100 € par an, au prix de deux contrats à suivre.</p>` },
+<p class="muted">Alternative équivalente : Lucya Cardif (Placement-direct), plus de choix de supports. Variante possible : mettre les 30 000 € sûrs dans un contrat de mutuelle sans frais d'entrée, Carac Épargne Patrimoine (fonds euros à 3,55 % en 2025) ou La France Mutualiste (3,50 %), et garder Linxea pour la partie ETF ; gain d'environ 100 à 140 € par an, au prix de deux contrats à suivre. Voir l'onglet Comparatifs.</p>` },
       { id: "m-pea", key: true, t: "Ouvrir son PEA chez Bourse Direct",
         how: `<ol><li>Ouverture en ligne, versement de 35 000 € (plafond 150 000 €).</li><li>Investissement programmé mensuel en <b>WPEA</b> (ISIN IE0002XZSHO1, 0,20 %/an), sans frais.</li><li>Les 5 ans du PEA tombent vers 58 ans : ensuite, les gains ne paient plus d'impôt sur le revenu (prélèvements sociaux 18,6 %).</li></ol>` },
       { id: "m-mari", cond: "avec son propre argent", t: "Un PEA pour son mari",
