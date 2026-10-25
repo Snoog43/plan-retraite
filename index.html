@@ -143,6 +143,11 @@ section.tool { display: flex; flex-direction: column; gap: 16px; }
 .where-table td:nth-child(2) { font-weight: 600; white-space: nowrap; }
 .where-table td:nth-child(3) { color: var(--muted); }
 .rule-table { min-width: 0; }
+.sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.source-group { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.source-group h3 { font-size: 15px; }
+.source-group ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.source-group a { overflow-wrap: anywhere; }
 .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .tabs button { font: inherit; font-weight: 600; font-size: 15px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted); padding: 10px 14px; cursor: pointer; margin-bottom: -1px; }
 .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
@@ -332,6 +337,84 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
       </table>
     </div>
     <p class="phase-intro">Livret A, LDDS et LEP : même taux dans toutes les banques (1,7 % et 2,5 %), inutile de comparer. Chiffres relevés en octobre 2026 dans des comparatifs, souvent publiés par des distributeurs : à revérifier sur le site de chaque établissement avant d'ouvrir.</p>
+  </section>
+
+  <section class="tool" aria-labelledby="src-title" data-only="compare">
+    <div class="phase-head">
+      <span class="eyebrow">Pour vérifier</span>
+      <h2 id="src-title">Sources</h2>
+      <p class="phase-intro">Les pages consultées pour construire les plans et les comparatifs (octobre 2026). Les sites officiels font foi ; les comparatifs sont souvent publiés par des distributeurs.</p>
+    </div>
+    <div class="sources">
+      <div class="source-group"><h3>Sites officiels</h3><ul>
+        <li><a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2367" target="_blank" rel="noopener">Service-public : livret d'épargne populaire (LEP)</a></li>
+        <li><a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2385" target="_blank" rel="noopener">Service-public : plan d'épargne en actions (PEA)</a></li>
+        <li><a href="https://www.amf-france.org/sites/institutionnel/files/pdf/59204/fr/Qu%27est-ce_que_%3C%3C_Epargne_Info_Service_%3E%3E_.pdf?1784373026" target="_blank" rel="noopener">AMF : Épargne Info Service</a></li>
+        <li><a href="https://www.lesclesdelabanque.com/particulier/placements-douteux-listes-noires-amf/" target="_blank" rel="noopener">Les clés de la banque : listes noires de l'AMF</a></li>
+        <li><a href="https://www.francetravail.fr/candidat/mes-droits-aux-aides-et-allocati/lessentiel-a-savoir-sur-lallocat/quels-sont-mes-droits-a-la-retra.html" target="_blank" rel="noopener">France Travail : droits à la retraite au chômage</a></li>
+        <li><a href="https://www.lassuranceretraite.fr/portail-info/home/actif/parcours-professionnel-retraite/chomage-retraite.html" target="_blank" rel="noopener">Assurance retraite : chômage et retraite</a></li>
+        <li><a href="https://lozere.fr/solidarite/personnes-handicapees/la-mdph.html" target="_blank" rel="noopener">Département de la Lozère : la MDPH</a></li>
+        <li><a href="https://www.monparcourshandicap.gouv.fr/information-et-orientation/vos-numeros-utiles" target="_blank" rel="noopener">Mon parcours handicap : numéros utiles</a></li>
+        <li><a href="https://www.monparcourshandicap.gouv.fr/actualite/mdph-nouvelle-diminution-de-la-duree-de-traitement-des-dossiers" target="_blank" rel="noopener">Mon parcours handicap : délais des MDPH</a></li>
+      </ul></div>
+      <div class="source-group"><h3>Livrets et fiscalité 2026</h3><ul>
+        <li><a href="https://www.previssima.fr/actualite/livret-a-ldds-lep-le-point-sur-les-changements-au-1er-aout-2026.html" target="_blank" rel="noopener">Previssima : livrets au 1er août 2026</a></li>
+        <li><a href="https://placement.meilleurtaux.com/livret-epargne/actualites/2026-juillet/livrets-les-taux-officiels-au-1er-aout-2026.html" target="_blank" rel="noopener">Meilleurtaux : taux officiels des livrets</a></li>
+        <li><a href="https://www.france-epargne.fr/academy/epargne-retraite/prelevements-sociaux-per-taux-2026" target="_blank" rel="noopener">France Épargne : prélèvements sociaux 2026</a></li>
+        <li><a href="https://www.quechoisir.org/actualite-hausse-de-la-csg-vos-revenus-sont-ils-concernes-n173786/" target="_blank" rel="noopener">Que Choisir : hausse de la CSG</a></li>
+        <li><a href="https://patrimoine-pratique.fr/assurance-vie/augmentation-csg-assurance-vie-2026/" target="_blank" rel="noopener">Patrimoine Pratique : CSG et assurance-vie</a></li>
+        <li><a href="https://www.linxea.com/lexique/assurance-vie/assurance-vie-fiscalite-apres-8-ans/" target="_blank" rel="noopener">Linxea : fiscalité après 8 ans</a></li>
+        <li><a href="https://blog.nalo.fr/abattement-152-500-assurance-vie/" target="_blank" rel="noopener">Nalo : abattement de 152 500 €</a></li>
+        <li><a href="https://legare.fr/jurisprudence/assurance-vie-communaute-recompense/" target="_blank" rel="noopener">Legare : assurance-vie et communauté</a></li>
+      </ul></div>
+      <div class="source-group"><h3>ETF et courtiers PEA</h3><ul>
+        <li><a href="https://www.ishares.com/ch/professionals/en/products/335178/ishares-msci-world-swap-pea-ucits-etf" target="_blank" rel="noopener">iShares : fiche du WPEA</a></li>
+        <li><a href="https://www.francetransactions.com/actus/news-bourse/marches/etf-pea-ishares-blackrock-frais-gestion-baisse-wpea.html" target="_blank" rel="noopener">FranceTransactions : baisse des frais du WPEA</a></li>
+        <li><a href="https://dcatracker.fr/etf-eligibles-pea" target="_blank" rel="noopener">DCA Tracker : ETF éligibles au PEA</a></li>
+        <li><a href="https://groupe.boursedirect.fr/actualites/actualites/bourse-direct-lance-ses-plans-dinvestissement-programmes-sans-frais-sur-etf-a-partir-de-quelques-euros-disponibles-sur-pea-et-compte-titres-20260512" target="_blank" rel="noopener">Bourse Direct : investissements programmés (communiqué)</a></li>
+        <li><a href="https://pea.fr/avis/pea-boursobank-2026-avis-frais-boursomarkets-et-alternatives/" target="_blank" rel="noopener">PEA.fr : BoursoBank 2026</a></li>
+        <li><a href="https://www.l-investisseur-long-terme.fr/pea-fortuneo-avis/" target="_blank" rel="noopener">L'investisseur long terme : Fortuneo</a></li>
+        <li><a href="https://www.meilleur-pea.fr/" target="_blank" rel="noopener">Meilleur-pea.fr : comparatif de 25 courtiers</a></li>
+        <li><a href="https://www.cafedelabourse.com/bourse/comparatif-meilleur-pea" target="_blank" rel="noopener">Café de la Bourse : comparatif PEA</a></li>
+        <li><a href="https://investimieux.com/avis-pea-xtb/" target="_blank" rel="noopener">Investimieux : PEA XTB</a></li>
+        <li><a href="https://www.xtb.com/fr/analyses-marches/etf-synthetique-pea-le-gouvernement-fait-marche-arriere" target="_blank" rel="noopener">XTB : maintien des ETF synthétiques en PEA</a></li>
+      </ul></div>
+      <div class="source-group"><h3>Assurances-vie et fonds euros</h3><ul>
+        <li><a href="https://www.linxea.com/assurance-vie/linxea-spirit-2" target="_blank" rel="noopener">Linxea Spirit 2 (fiche officielle)</a></li>
+        <li><a href="https://cleerly.fr/assurance-vie/linxea-spirit-2" target="_blank" rel="noopener">Cleerly : avis Linxea Spirit 2</a></li>
+        <li><a href="https://www.carac.fr/nos-solutions-epargne-patrimoine/carac-epargne-patrimoine" target="_blank" rel="noopener">Carac Épargne Patrimoine (fiche officielle)</a></li>
+        <li><a href="https://placement.meilleurtaux.com/assurance-vie/actualites/2026-janvier/france-mutualiste-sert-3-5-fonds-euros.html" target="_blank" rel="noopener">Meilleurtaux : La France Mutualiste à 3,50 %</a></li>
+        <li><a href="https://finance-heros.fr/avis-assurance-vie/actepargne-2/" target="_blank" rel="noopener">Finance Héros : avis Actépargne 2</a></li>
+        <li><a href="https://www.moneyvox.fr/assurance-vie/actualites/106787/taux-assurance-vie-les-bons-et-mauvais-rendements-de-2025" target="_blank" rel="noopener">Moneyvox : rendements 2025</a></li>
+        <li><a href="https://www.mingzi.fr/mingzi-actualites/assurance-vie-taux-de-rendement-fonds-en-euros-les-meilleurs-taux/" target="_blank" rel="noopener">Mingzi : fonds euros contrat par contrat</a></li>
+        <li><a href="https://choisirmonassurancevie.com/comparatif/assurance-vie-mif-avis/" target="_blank" rel="noopener">Choisir mon assurance vie : MIF</a></li>
+        <li><a href="https://comparatif-assurances-vie.com/meilleure-assurance-vie" target="_blank" rel="noopener">Comparatif-assurances-vie.com : frais totaux</a></li>
+        <li><a href="https://www.goodvalueformoney.eu/produit/selection-sel0000692-ampli-assurance-vie-selection-2026" target="_blank" rel="noopener">Good Value for Money : labels 2026</a></li>
+      </ul></div>
+      <div class="source-group"><h3>PER</h3><ul>
+        <li><a href="https://www.ramify.fr/per/en-ligne" target="_blank" rel="noopener">Ramify : PER en ligne</a></li>
+        <li><a href="https://blog.nalo.fr/meilleur-per/" target="_blank" rel="noopener">Nalo : meilleur PER 2026</a></li>
+        <li><a href="https://get-gustav.com/meilleur-per/" target="_blank" rel="noopener">Get Gustav : 14 PER sans affiliation</a></li>
+        <li><a href="https://signal-alpha.fr/comparatif-chez-qui-prendre-son-per/" target="_blank" rel="noopener">Signal Alpha : comparatif PER</a></li>
+      </ul></div>
+      <div class="source-group"><h3>Retraite, AAH et autisme</h3><ul>
+        <li><a href="https://observatoiredesfragilites.fr/suspension-reforme-des-retraites-qui-est-concerne-en-2026/" target="_blank" rel="noopener">Observatoire des fragilités : suspension de la réforme</a></li>
+        <li><a href="https://www.legisocial.fr/reperes-sociaux/allocation-adultes-handicapes-aah-2026.html" target="_blank" rel="noopener">Legisocial : AAH 2026</a></li>
+        <li><a href="https://www.aide-sociale.fr/aah-epargne/" target="_blank" rel="noopener">Aide-sociale.fr : AAH et épargne</a></li>
+        <li><a href="https://www.aide-sociale.fr/aah-retraite/" target="_blank" rel="noopener">Aide-sociale.fr : AAH et retraite</a></li>
+        <li><a href="https://www.aide-sociale.fr/retroactivite-aah/" target="_blank" rel="noopener">Aide-sociale.fr : rétroactivité de l'AAH</a></li>
+        <li><a href="https://www.autisme-ressources-lr.fr/le-cra-lr/antenne-equipe-associees" target="_blank" rel="noopener">Centre ressources autisme Languedoc-Roussillon</a></li>
+        <li><a href="https://www.chu-montpellier.fr/fr/offre-de-soins/consultations/consultation-de-diagnostic-et-soins-pour-l-autisme-a-l-age-adulte-421" target="_blank" rel="noopener">CHU de Montpellier : autisme adulte</a></li>
+        <li><a href="https://www.epsm-lozere.fr/patient-et-entourage/votre-parcours-patient/vous-etes-adulte/" target="_blank" rel="noopener">Hôpital François Tosquelles (Lozère) : parcours adulte</a></li>
+      </ul></div>
+      <div class="source-group"><h3>Données des communautés</h3><ul>
+        <li><a href="https://github.com/ArthurHeitmann/arctic_shift/blob/master/api/README.md" target="_blank" rel="noopener">Arctic Shift : archive publique de Reddit (122 000 posts, 97 600 commentaires analysés)</a></li>
+        <li><a href="https://community.finary.com/t/investissement-programme-sur-bourse-direct/35662" target="_blank" rel="noopener">Finary : investissement programmé Bourse Direct</a></li>
+        <li><a href="https://community.finary.com/t/dca-sur-pea-boursobank-besoin-de-retours-depuis-la-mise-a-jour-des-tarifs/33267" target="_blank" rel="noopener">Finary : DCA sur PEA BoursoBank</a></li>
+        <li><a href="https://forum.finance-heros.fr/t/investissement-programme-sur-pea/1515" target="_blank" rel="noopener">Forum Finance Héros : investissement programmé</a></li>
+        <li><a href="https://www.moneyvox.fr/forums/fil/les-rendements-de-2025-sur-les-fonds-euros-des-av.53430/" target="_blank" rel="noopener">Forum Moneyvox : rendements 2025</a></li>
+      </ul></div>
+    </div>
   </section>
 
   <div class="timeline" id="timeline"></div>
