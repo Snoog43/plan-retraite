@@ -255,6 +255,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
           <tr><td>2</td><td>Lucya Cardif</td><td>0 %</td><td>0,50 %</td><td>≈ 2,75 – 2,85 %</td><td>Très large choix de supports. 500 € minimum.</td></tr>
           <tr><td>3</td><td>Placement-direct Vie</td><td>0 %</td><td>0,50 – 0,60 %</td><td>≈ 3,00 %</td><td>Bonne alternative, chiffres de frais variables selon les comparatifs.</td></tr>
           <tr><td>4</td><td>BoursoBank Vie</td><td>0 %</td><td>0,75 %</td><td>3,21 %</td><td>Bon fonds euros, frais ETF plus élevés.</td></tr>
+          <tr><td>★</td><td>La France Mutualiste · Actépargne 2</td><td>0 %</td><td>0,77 % (gestion)</td><td><b>3,50 %</b></td><td>Meilleur fonds euros du tableau, sans obligation de prendre des unités de compte. Mais choix d'unités de compte limité, aucun ETF confirmé, arbitrages à 0,45 %. Idéal pour la partie « sûre », pas pour la partie ETF.</td></tr>
           <tr><td>5</td><td>Altaprofits Vie</td><td>0 %</td><td>0,60 %</td><td>n.c.</td><td>0,45 % au-delà de 300 000 €.</td></tr>
           <tr><td>6</td><td>Fortuneo Vie</td><td>0 %</td><td>0,60 – 0,75 %</td><td>n.c.</td><td>Correct, sans avantage particulier.</td></tr>
           <tr><td>7</td><td>Linxea Avenir 2</td><td>0 %</td><td>n.c.</td><td>2,10 – 3,00 %</td><td>Fonds euros selon le support choisi.</td></tr>
@@ -298,6 +299,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
         <tbody>
           <tr><td>1</td><td>Linxea Spirit PER</td><td>0,50 %</td><td>3,08 %</td><td>Le moins cher en gestion libre, très large choix.</td></tr>
           <tr><td>2</td><td>Placement-direct PER</td><td>0,60 %</td><td>≈ 4,00 % (selon un comparatif)</td><td>Bonne alternative.</td></tr>
+          <tr><td>★</td><td>La France Mutualiste · PER'FORM</td><td>n.c.</td><td>4,00 %</td><td>Très bon fonds euros (chiffre de l'assureur) ; offre d'unités de compte à vérifier avant de choisir.</td></tr>
           <tr><td>3</td><td>Ramify PER</td><td>≈ 1 – 1,4 % au total</td><td>fonds garanti à 70 %</td><td>Gestion pilotée.</td></tr>
           <tr><td>4</td><td>Nalo PER</td><td>≈ 1,35 – 1,6 % au total</td><td>variable</td><td>Gestion pilotée.</td></tr>
           <tr><td>5</td><td>Yomoni Retraite+</td><td>≈ 1,6 – 2,2 % au total</td><td>variable</td><td>Gestion pilotée, la plus chère des trois.</td></tr>
@@ -524,7 +526,7 @@ const PLAN = [
     items: [
       { id: "m-av", key: true, t: "Ouvrir son assurance-vie Linxea Spirit 2 et y placer 30 000 € en fonds euros",
         how: `<ol><li>Souscription en ligne sur linxea.com : 0 % de frais sur versement, 0,50 %/an sur les ETF. Fonds euros à 3,08–3,26 % en 2025, garantis à 98 %.</li><li>Versement initial : 55 000 €. Tout de suite : 30 000 € sur le fonds euros. Les 25 000 € restants attendent sur le fonds euros et basculent chaque mois vers l'ETF Monde.</li><li>Clause bénéficiaire : « mon conjoint, à défaut mes enfants, nés ou à naître, vivants ou représentés, par parts égales ».</li></ol>
-<p class="muted">Alternative équivalente : Lucya Cardif (Placement-direct), plus de choix de supports.</p>` },
+<p class="muted">Alternative équivalente : Lucya Cardif (Placement-direct), plus de choix de supports. Variante possible : mettre les 30 000 € sûrs chez La France Mutualiste (Actépargne 2, fonds euros à 3,50 % en 2025) et garder Linxea pour la partie ETF ; gain d'environ 100 € par an, au prix de deux contrats à suivre.</p>` },
       { id: "m-pea", key: true, t: "Ouvrir son PEA chez Bourse Direct",
         how: `<ol><li>Ouverture en ligne, versement de 35 000 € (plafond 150 000 €).</li><li>Investissement programmé mensuel en <b>WPEA</b> (ISIN IE0002XZSHO1, 0,20 %/an), sans frais.</li><li>Les 5 ans du PEA tombent vers 58 ans : ensuite, les gains ne paient plus d'impôt sur le revenu (prélèvements sociaux 18,6 %).</li></ol>` },
       { id: "m-mari", cond: "avec son propre argent", t: "Un PEA pour son mari",
