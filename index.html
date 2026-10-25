@@ -162,7 +162,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
     <span class="eyebrow">Plan sur 36 ans</span>
     <h1 id="page-title">Plan retraite du foyer</h1>
     <p class="lede" id="lede">Le plan pas à pas pour transformer vos économies en capital retraite, en passant d'abord par une année prudente tant que les revenus du foyer sont réduits. Coche chaque étape quand elle est faite : ta progression est enregistrée.</p>
-        <div class="progress-card" aria-live="polite">
+        <div class="progress-card" aria-live="polite" data-only="invest mdph parents">
       <div class="progress-row">
         <strong>Progression</strong>
         <span class="num" id="pct">0 %</span>
@@ -176,6 +176,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
   <nav class="tabs" role="tablist" aria-label="Protocoles">
     <button type="button" role="tab" data-tab="invest" aria-selected="true">Protocole investissement</button>
     <button type="button" role="tab" data-tab="mdph" aria-selected="false">Démarches MDPH</button>
+    <button type="button" role="tab" data-tab="compare" aria-selected="false">Comparatifs</button>
     <button type="button" role="tab" data-tab="parents" aria-selected="false">Plan héritage 50+</button>
   </nav>
 
@@ -219,6 +220,92 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
         </tbody>
       </table>
     </div>
+  </section>
+
+  <section class="tool" aria-labelledby="proj-m-title" data-only="compare">
+    <div class="phase-head">
+      <span class="eyebrow">Simulation</span>
+      <h2 id="proj-m-title">La personne qui a hérité à 65 ans : héritage + 800 € par mois</h2>
+      <p class="phase-intro">Hypothèses : 90 000 € de l'héritage placés selon son plan (la part actions étalée sur 12 mois), puis 800 € par mois de juin 2027 à ses 65 ans (vers octobre 2038), soit 109 600 € versés en plus. Répartition des 800 € identique à celle de l'héritage. Montants en euros d'aujourd'hui : actions à 4, 5 ou 6 %/an et fonds euros à 0,8 %/an après inflation. Ce sont des projections, pas des garanties.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table rule-table">
+        <thead><tr><th scope="col">Profil</th><th scope="col">Actions à 4 %</th><th scope="col">Actions à 5 %</th><th scope="col">Actions à 6 %</th><th scope="col">Revenu sur 25 ans (5 %)</th></tr></thead>
+        <tbody>
+          <tr><td>Prudent (40 % actions)</td><td class="num">≈ 240 000 €</td><td class="num">≈ 250 000 €</td><td class="num">≈ 261 000 €</td><td class="num">≈ 1 195 €/mois</td></tr>
+          <tr><td><b>Équilibré (60 %)</b></td><td class="num">≈ 253 000 €</td><td class="num"><b>≈ 268 000 €</b></td><td class="num">≈ 284 000 €</td><td class="num"><b>≈ 1 280 €/mois</b></td></tr>
+          <tr><td>Dynamique (75 %)</td><td class="num">≈ 263 000 €</td><td class="num">≈ 281 000 €</td><td class="num">≈ 302 000 €</td><td class="num">≈ 1 345 €/mois</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="phase-intro">Sur ≈ 268 000 € (équilibré, 5 %), elle aura versé 199 600 € : environ 68 000 € viennent des intérêts composés. Sans les 800 € par mois, le capital serait d'environ 134 000 €. Le revenu suppose de consommer le capital sur 25 ans, à 3 %/an. Les 10 000 € d'épargne de précaution ne sont pas comptés.</p>
+  </section>
+
+  <section class="tool" aria-labelledby="cmp-av-title" data-only="compare">
+    <div class="phase-head">
+      <span class="eyebrow">Classement · gestion libre en ETF, long terme</span>
+      <h2 id="cmp-av-title">Assurances-vie</h2>
+      <p class="phase-intro">Classées pour l'usage du plan : investir soi-même en ETF avec le moins de frais possible, plus un bon fonds euros. Les rendements de fonds euros sont ceux de 2025, nets de frais de gestion. « n.c. » : chiffre non trouvé de façon fiable.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table">
+        <thead><tr><th scope="col">#</th><th scope="col">Contrat</th><th scope="col">Frais versement</th><th scope="col">Frais/an ETF</th><th scope="col">Fonds euros 2025</th><th scope="col">À retenir</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Linxea Spirit 2</td><td>0 %</td><td>0,50 %</td><td>3,08 – 3,26 %</td><td>Choix du plan. 500 € minimum, versements programmés dès 100 €. Fonds euros garanti à 98 %.</td></tr>
+          <tr><td>2</td><td>Lucya Cardif</td><td>0 %</td><td>0,50 %</td><td>≈ 2,75 – 2,85 %</td><td>Très large choix de supports. 500 € minimum.</td></tr>
+          <tr><td>3</td><td>Placement-direct Vie</td><td>0 %</td><td>0,50 – 0,60 %</td><td>≈ 3,00 %</td><td>Bonne alternative, chiffres de frais variables selon les comparatifs.</td></tr>
+          <tr><td>4</td><td>BoursoBank Vie</td><td>0 %</td><td>0,75 %</td><td>3,21 %</td><td>Bon fonds euros, frais ETF plus élevés.</td></tr>
+          <tr><td>5</td><td>Altaprofits Vie</td><td>0 %</td><td>0,60 %</td><td>n.c.</td><td>0,45 % au-delà de 300 000 €.</td></tr>
+          <tr><td>6</td><td>Fortuneo Vie</td><td>0 %</td><td>0,60 – 0,75 %</td><td>n.c.</td><td>Correct, sans avantage particulier.</td></tr>
+          <tr><td>7</td><td>Linxea Avenir 2</td><td>0 %</td><td>n.c.</td><td>2,10 – 3,00 %</td><td>Fonds euros selon le support choisi.</td></tr>
+          <tr><td>8</td><td>Gestion pilotée (Ramify, Nalo, Yomoni)</td><td>0 %</td><td>≈ 1 – 1,6 % au total</td><td>variable</td><td>On paie pour déléguer : 2 à 3 fois plus cher que la gestion libre.</td></tr>
+          <tr><td>9</td><td>Banques traditionnelles (Crédit Agricole, BNP, SG, La Banque Postale…)</td><td>souvent payants</td><td>souvent ≥ 0,8 %</td><td>≈ 2,15 – 2,90 %</td><td>À éviter : fonds euros plus faibles (moyenne du marché 2,6 %) et frais plus élevés.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tool" aria-labelledby="cmp-pea-title" data-only="compare">
+    <div class="phase-head">
+      <span class="eyebrow">Classement · achats mensuels d'ETF</span>
+      <h2 id="cmp-pea-title">Courtiers PEA</h2>
+      <p class="phase-intro">Les frais annuels de l'ETF (0,20 % pour WPEA ou DCAM) sont les mêmes partout ; seuls les frais d'achat et de tenue de compte changent.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table">
+        <thead><tr><th scope="col">#</th><th scope="col">Courtier</th><th scope="col">Achat mensuel de 250 €</th><th scope="col">Gros ordre</th><th scope="col">À retenir</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Bourse Direct</td><td>0 € (investissement programmé)</td><td>Grille dégressive</td><td>Choix du plan : achats automatiques sur ETF sans frais ni minimum depuis mai 2026. Courtier français.</td></tr>
+          <tr><td>2</td><td>BoursoBank</td><td>1,99 €</td><td>0 € sur WPEA dès 500 €</td><td>Le plus cité sur Reddit. Idéal si on achète par ordres d'au moins 500 €.</td></tr>
+          <tr><td>3</td><td>Saxo</td><td>2 € (0,08 %, minimum 2 €)</td><td>0,08 %</td><td>Promotion sur des ETF Amundi jusqu'à fin 2026.</td></tr>
+          <tr><td>4</td><td>Fortuneo</td><td>≈ 0,35 – 0,5 %</td><td>Forfaits</td><td>Le 1er ordre mensuel n'est plus gratuit depuis 2025.</td></tr>
+          <tr><td>5</td><td>Trade Republic</td><td>0 € (plan programmé)</td><td>1 €</td><td>Le moins cher, mais courtier étranger : pas de déclaration fiscale pré-remplie, service client et transferts de PEA critiqués.</td></tr>
+          <tr><td>6</td><td>Interactive Brokers</td><td>1,25 € minimum</td><td>0,05 %</td><td>Pour gros montants et investisseurs avertis ; déclaration fiscale à faire soi-même.</td></tr>
+          <tr><td>7</td><td>Crédit Agricole (Investore)</td><td>Frais par ordre</td><td>Dégressif</td><td>À éviter : 96 €/an si peu d'ordres dans l'année.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tool" aria-labelledby="cmp-per-title" data-only="compare">
+    <div class="phase-head">
+      <span class="eyebrow">Classement · seulement si tranche d'impôt ≥ 30 %</span>
+      <h2 id="cmp-per-title">PER individuels</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table">
+        <thead><tr><th scope="col">#</th><th scope="col">Contrat</th><th scope="col">Frais/an ETF</th><th scope="col">Fonds euros 2025</th><th scope="col">À retenir</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Linxea Spirit PER</td><td>0,50 %</td><td>3,08 %</td><td>Le moins cher en gestion libre, très large choix.</td></tr>
+          <tr><td>2</td><td>Placement-direct PER</td><td>0,60 %</td><td>≈ 4,00 % (selon un comparatif)</td><td>Bonne alternative.</td></tr>
+          <tr><td>3</td><td>Ramify PER</td><td>≈ 1 – 1,4 % au total</td><td>fonds garanti à 70 %</td><td>Gestion pilotée.</td></tr>
+          <tr><td>4</td><td>Nalo PER</td><td>≈ 1,35 – 1,6 % au total</td><td>variable</td><td>Gestion pilotée.</td></tr>
+          <tr><td>5</td><td>Yomoni Retraite+</td><td>≈ 1,6 – 2,2 % au total</td><td>variable</td><td>Gestion pilotée, la plus chère des trois.</td></tr>
+          <tr><td>6</td><td>PER bancaires</td><td>élevés</td><td>variable</td><td>À éviter : frais d'entrée et de gestion importants.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="phase-intro">Livret A, LDDS et LEP : même taux dans toutes les banques (1,7 % et 2,5 %), inutile de comparer. Chiffres relevés en octobre 2026 dans des comparatifs, souvent publiés par des distributeurs : à revérifier sur le site de chaque établissement avant d'ouvrir.</p>
   </section>
 
   <div class="timeline" id="timeline"></div>
@@ -525,14 +612,15 @@ const isDone = id => !!(state[id] && state[id].done);
 let year = Math.min(Math.max(new Date().getFullYear() + (new Date().getMonth() >= 10 ? 1 : 0), YEAR_MIN), YEAR_MAX);
 
 let tab = "invest";
-const TABS = ["invest", "mdph", "parents"];
+const TABS = ["invest", "mdph", "compare", "parents"];
 try {
   const h = location.hash === "#mere" ? "parents" : location.hash.slice(1);
   const saved = localStorage.getItem("plan-tab");
   tab = TABS.includes(h) ? h : (TABS.includes(saved) ? saved : "invest");
 } catch (e) {}
 const LEDE = document.getElementById("lede").innerHTML;
-const PARENTS_LEDE = "Un plan séparé pour placer 100&nbsp;000&nbsp;€ d'héritage dans la cinquantaine, avec une dizaine d'années avant la retraite puis 25 ans ou plus de retraite. Les cases cochées ici sont enregistrées comme celles du plan principal.";
+const COMPARE_LEDE = "Les chiffres qui justifient les choix des plans : la projection de la personne qui a hérité à 65 ans et le classement des assurances-vie, courtiers PEA et PER. Rien à cocher ici.";
+const PARENTS_LEDE ="Un plan séparé pour placer 100&nbsp;000&nbsp;€ d'héritage dans la cinquantaine, avec une dizaine d'années avant la retraite puis 25 ans ou plus de retraite. Les cases cochées ici sont enregistrées comme celles du plan principal.";
 const phasesFor = () => PLAN.filter(p => (p.tab || "invest") === tab);
 
 function allIds() {
@@ -591,12 +679,12 @@ function render() {
   }
   document.getElementById("timeline").innerHTML = html;
   document.querySelectorAll("[data-only]").forEach(el => { el.hidden = !el.dataset.only.split(" ").includes(tab); });
-  document.getElementById("page-title").textContent = tab === "parents" ? "Plan héritage 50+" : "Plan retraite du foyer";
-  document.getElementById("lede").innerHTML = tab === "parents" ? PARENTS_LEDE : LEDE;
+  document.getElementById("page-title").textContent = tab === "parents" ? "Plan héritage 50+" : tab === "compare" ? "Comparatifs et simulations" : "Plan retraite du foyer";
+  document.getElementById("lede").innerHTML = tab === "parents" ? PARENTS_LEDE : tab === "compare" ? COMPARE_LEDE : LEDE;
   document.querySelectorAll("button[data-tab]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
   open.forEach(id => { const el = id && document.querySelector(`input[data-id="${id}"]`); el?.closest(".item")?.querySelector("details")?.setAttribute("open", ""); });
 
-  const ids = allIds(), done = ids.filter(isDone).length, pct = Math.round(done / ids.length * 100);
+  const ids = allIds(), done = ids.filter(isDone).length, pct = ids.length ? Math.round(done / ids.length * 100) : 0;
   document.getElementById("pct").textContent = pct + " %";
   document.getElementById("bar").style.width = pct + "%";
   const nx = firstOpen();
