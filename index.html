@@ -218,7 +218,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
       <table class="where-table">
         <thead><tr><th scope="col">Montant</th><th scope="col">Où</th><th scope="col">Rôle</th></tr></thead>
         <tbody>
-          <tr><td class="num"><b>20 000 €</b></td><td>LEP de ton conjoint (10 000 €) + ton LEP si tu as un avis à ton nom, sinon Livret A en attendant (10 000 €)</td><td>Matelas : environ 13 mois de dépenses. On n'y touche que pour un imprévu ou si le mois est dans le rouge.</td></tr>
+          <tr><td class="num"><b>20 000 €</b></td><td>LEP de ton conjoint (10 000 €) + ton LEP (10 000 €), si vos avis sont sous le plafond</td><td>Matelas : environ 13 mois de dépenses. On n'y touche que pour un imprévu ou si le mois est dans le rouge.</td></tr>
           <tr><td class="num"><b>1 200 €</b></td><td>2 PEA Bourse Direct (100 € chacun) + 2 assurances-vie Linxea (500 € chacune)</td><td>Ouvrir maintenant pour démarrer les compteurs fiscaux (5 et 8 ans).</td></tr>
           <tr><td class="num"><b>6 000 €</b></td><td>500 €/mois pendant 12 mois : 250 € par PEA, en WPEA automatique</td><td>Investissement prudent pendant l'année de chômage.</td></tr>
           <tr><td class="num"><b>12 800 €</b></td><td>Livret A, en attente</td><td>Investis sur 6 mois quand ton conjoint retrouve un emploi.</td></tr>
@@ -233,7 +233,7 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
       <h2 id="when-title">Quoi faire, et quand</h2>
     </div>
     <ol class="sum-steps">
-      <li><span class="when-tag">Avant le 31 décembre 2026</span><b>Ouvrir le LEP de ton conjoint</b> au Crédit Agricole avec son avis d'impôt 2025, et y verser 10 000 €. Ouvrir le tien en même temps si tu as un avis d'impôt à ton nom.</li>
+      <li><span class="when-tag">Avant le 31 décembre 2026</span><b>Ouvrir le LEP de ton conjoint</b> au Crédit Agricole avec son avis d'impôt 2025, et y verser 10 000 €. Ouvrir le tien au même rendez-vous avec ton avis 2026, et y verser 10 000 €.</li>
       <li><span class="when-tag">Novembre 2026</span><b>Ouvrir 2 PEA chez Bourse Direct</b> (100 € chacun) et <b>2 assurances-vie Linxea Spirit 2</b> (500 € chacune). Mettre le reste du matelas sur Livret A et LDDS.</li>
       <li><span class="when-tag">Décembre 2026 → reprise</span><b>Investissement programmé de 250 € par PEA</b> en WPEA, pris sur l'épargne. Si un mois est dans le rouge, on saute ce mois.</li>
       <li><span class="when-tag">Retour à l'emploi</span><b>Investir les 12 800 € en attente sur 6 mois</b>, puis un virement automatique chaque mois : salaire net − dépenses (≈ 1 600 €) − 500 € de marge. Avec 3 000 € de salaire : environ 800 €/mois.</li>
@@ -648,8 +648,8 @@ const PLAN = [
         how: `<p>Sous le plafond de revenus, tu as droit au LEP : il faut un justificatif.</p><ol><li>impots.gouv.fr → <b>Votre espace particulier</b> → connexion (numéro fiscal ou FranceConnect).</li><li><b>Documents</b> → <b>Avis d'impôt</b> : télécharge ton avis 2025 ou 2026 (« non imposable » suffit).</li><li>Pas d'avis à ton nom ? Service-public ne prévoit la <b>déclaration sur l'honneur</b> que pour une 1re déclaration après un décès, un divorce ou un départ du foyer des parents. Sinon, il faut un avis : le tien, ou l'avis commun du couple.</li><li>Dans ce cas, ton LEP attend l'avis commun de l'été 2027 (revenus 2026 du couple, 2 parts : plafond <span class="num">35 326 €</span>). En attendant, tes 10 000 € vont sur un Livret A à ton nom.</li></ol>` },
       { id: "t-lep-f", key: true, t: "LEP de ton conjoint au Crédit Agricole + virement de 10 000 €",
         how: `<ol><li>Appli <b>Ma Banque</b> → rubrique Épargne / Souscrire → « Livret d'Épargne Populaire ». S'il n'est pas proposé en ligne : appeler la conseillère ou prendre rendez-vous (possible par téléphone).</li><li>Fournir sa carte d'identité et son <b>avis d'impôt 2025</b>.</li><li>Virement de <span class="num">10 000 €</span> du compte commun vers son LEP.</li><li>À toute autre proposition : « Seulement le LEP, merci ».</li></ol><p class="muted">Date limite : 31 décembre 2026. Vérifier quel avis passe sous le plafond.</p>` },
-      { id: "t-lep-m", cond: "si tu as un avis à ton nom", t: "Ton LEP au Crédit Agricole + virement de 10 000 €",
-        how: `<p>Même démarche que pour ton conjoint, au même rendez-vous, avec ton avis d'impôt (même « non imposable »). Sans avis à ton nom : Livret A pour l'instant, LEP à l'été 2027 avec l'avis commun. Service-public : il peut y avoir 2 LEP dans un même foyer si les époux sont en imposition commune.</p>` },
+      { id: "t-lep-m", key: true, t: "Ton LEP au Crédit Agricole + virement de 10 000 €",
+        how: `<p>À vérifier sur ton avis d'impôt (plafond 23 028 € pour une part). Même démarche que pour ton conjoint, au même rendez-vous, avec cet avis et ta carte d'identité. Avec deux LEP, les 20 000 € du matelas sont tous à 2,5 %.</p>` },
       { id: "t-pea-m", key: true, t: "Ouvrir ton PEA chez Bourse Direct (15 min) + 100 €",
         how: `<ol><li>boursedirect.fr → <b>Ouvrir un compte</b> → <b>PEA</b>.</li><li>Formulaire + signature électronique.</li><li>Pièces : carte d'identité, justificatif de domicile de moins de 3 mois, <b>RIB du compte commun</b> (un compte joint à vos deux noms est en principe accepté).</li><li>Premier versement : <span class="num">100 €</span> depuis le compte commun. Validation en quelques jours.</li></ol>` },
       { id: "t-pea-f", key: true, t: "Ton conjoint ouvre son PEA chez Bourse Direct + 100 €",
