@@ -219,9 +219,9 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
         <thead><tr><th scope="col">Montant</th><th scope="col">Où</th><th scope="col">Rôle</th></tr></thead>
         <tbody>
           <tr><td class="num"><b>20 000 €</b></td><td>LEP de ton conjoint (10 000 €) + ton LEP (10 000 €), si vos avis sont sous le plafond</td><td>Matelas : environ 13 mois de dépenses. On n'y touche que pour un imprévu ou si le mois est dans le rouge.</td></tr>
-          <tr><td class="num"><b>400 €</b></td><td>2 PEA Bourse Direct (100 € chacun) + 2 assurances-vie Linxea (100 € chacune)</td><td>Ouvrir maintenant pour démarrer les compteurs fiscaux (5 et 8 ans).</td></tr>
+          <tr><td class="num"><b>1 200 €</b></td><td>2 PEA Bourse Direct (100 € chacun) + 2 assurances-vie Linxea (500 € chacune)</td><td>Ouvrir maintenant pour démarrer les compteurs fiscaux (5 et 8 ans).</td></tr>
           <tr><td class="num"><b>6 000 €</b></td><td>500 €/mois pendant 12 mois : 250 € par PEA, en WPEA automatique</td><td>Investissement prudent pendant l'année de chômage.</td></tr>
-          <tr><td class="num"><b>13 600 €</b></td><td>Livret A, en attente</td><td>Investis sur 6 mois quand ton conjoint retrouve un emploi.</td></tr>
+          <tr><td class="num"><b>12 800 €</b></td><td>Livret A, en attente</td><td>Investis sur 6 mois quand ton conjoint retrouve un emploi.</td></tr>
         </tbody>
       </table>
     </div>
@@ -234,9 +234,9 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
     </div>
     <ol class="sum-steps">
       <li><span class="when-tag">Avant le 31 décembre 2026</span><b>Ouvrir le LEP de ton conjoint</b> au Crédit Agricole avec son avis d'impôt 2025, et y verser 10 000 €. Ouvrir le tien au même rendez-vous avec ton avis 2026, et y verser 10 000 €.</li>
-      <li><span class="when-tag">Novembre 2026</span><b>Ouvrir 2 PEA chez Bourse Direct</b> (100 € chacun) et <b>2 assurances-vie Linxea Spirit 2</b> (100 € chacune). Mettre le reste du matelas sur Livret A et LDDS.</li>
+      <li><span class="when-tag">Novembre 2026</span><b>Ouvrir 2 PEA chez Bourse Direct</b> (100 € chacun) et <b>2 assurances-vie Linxea Spirit 2</b> (500 € chacune). Mettre le reste du matelas sur Livret A et LDDS.</li>
       <li><span class="when-tag">Décembre 2026 → reprise</span><b>Investissement programmé de 250 € par PEA</b> en WPEA, pris sur l'épargne. Si un mois est dans le rouge, on saute ce mois.</li>
-      <li><span class="when-tag">Retour à l'emploi</span><b>Investir les 13 600 € en attente sur 6 mois</b>, puis un virement automatique chaque mois : salaire net − dépenses (≈ 1 600 €) − 500 € de marge. Avec 3 000 € de salaire : environ 800 €/mois.</li>
+      <li><span class="when-tag">Retour à l'emploi</span><b>Investir les 12 800 € en attente sur 6 mois</b>, puis un virement automatique chaque mois : salaire net − dépenses (≈ 1 600 €) − 500 € de marge. Avec 3 000 € de salaire : environ 800 €/mois.</li>
       <li><span class="when-tag">Chaque année</span>Augmenter le versement si les revenus montent, vérifier le matelas, ne rien vendre.</li>
       <li><span class="when-tag">En parallèle</span>Dossier MDPH (onglet Démarches MDPH). Si l'AAH est accordée, ajouter environ 400 €/mois.</li>
     </ol>
@@ -654,9 +654,9 @@ const PLAN = [
         how: `<ol><li>boursedirect.fr → <b>Ouvrir un compte</b> → <b>PEA</b>.</li><li>Formulaire + signature électronique.</li><li>Pièces : carte d'identité, justificatif de domicile de moins de 3 mois, <b>RIB du compte commun</b> (un compte joint à vos deux noms est en principe accepté).</li><li>Premier versement : <span class="num">100 €</span> depuis le compte commun. Validation en quelques jours.</li></ol>` },
       { id: "t-pea-f", key: true, t: "Ton conjoint ouvre son PEA chez Bourse Direct + 100 €",
         how: `<p>Exactement la même démarche, à son nom, avec ses pièces.</p>` },
-      { id: "t-av-m", key: true, t: "Ouvrir ton assurance-vie Linxea Spirit 2 (15 min) + 100 €",
-        how: `<ol><li>linxea.com → <b>Linxea Spirit 2</b> → <b>Souscrire en ligne</b>.</li><li>Versement initial : <span class="num">100 €</span> (minimum actuel) depuis le compte commun, laissé sur le fonds euros pour l'instant.</li><li>Clause bénéficiaire : « mon conjoint, à défaut mes enfants nés ou à naître, à défaut mes héritiers ».</li></ol>` },
-      { id: "t-av-f", key: true, t: "Ton conjoint ouvre son assurance-vie Linxea Spirit 2 + 100 €",
+      { id: "t-av-m", key: true, t: "Ouvrir ton assurance-vie Linxea Spirit 2 (15 min) + 500 €",
+        how: `<ol><li>linxea.com → <b>Linxea Spirit 2</b> → <b>Souscrire en ligne</b>.</li><li>Versement initial : <span class="num">500 €</span> (minimum de Spirit 2) depuis le compte commun, laissé sur le fonds euros pour l'instant.</li><li>Clause bénéficiaire : « mon conjoint, à défaut mes enfants nés ou à naître, à défaut mes héritiers ».</li></ol>` },
+      { id: "t-av-f", key: true, t: "Ton conjoint ouvre son assurance-vie Linxea Spirit 2 + 500 €",
         how: `<p>Même démarche, à son nom, avec toi comme bénéficiaire.</p>` },
       { id: "t-livret", t: "Placer le reste sur Livret A / LDDS au Crédit Agricole",
         how: `<ul><li>Complément du matelas si ton LEP ne peut pas être ouvert tout de suite : <span class="num">10 000 €</span> sur un Livret A à ton nom.</li><li>Les <span class="num">12 800 €</span> réservés à la reprise : sur un Livret A, en attente.</li><li>Livret A et LDDS sont aussi individuels (un de chaque par personne).</li></ul>` },
