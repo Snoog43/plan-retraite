@@ -167,6 +167,10 @@ section.tool { display: flex; flex-direction: column; gap: 16px; }
 .source-group h3 { font-size: 15px; }
 .source-group ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
 .source-group a { overflow-wrap: anywhere; }
+.sum-steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 10px; }
+.sum-steps li { counter-increment: s; position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 12px 52px; font-size: 15px; }
+.sum-steps li::before { content: counter(s); position: absolute; left: 14px; top: 12px; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--surface); font-weight: 700; display: grid; place-items: center; font-size: 14px; }
+.sum-steps .when-tag { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--chestnut); font-weight: 600; margin-bottom: 2px; }
 .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .tabs button { font: inherit; font-weight: 600; font-size: 15px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted); padding: 10px 14px; cursor: pointer; margin-bottom: -1px; }
 .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
@@ -198,13 +202,60 @@ footer { font-size: 13px; color: var(--muted); display: flex; flex-direction: co
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Protocoles">
-    <button type="button" role="tab" data-tab="invest" aria-selected="true">Protocole investissement</button>
+    <button type="button" role="tab" data-tab="resume" aria-selected="true">Que faire</button>
+    <button type="button" role="tab" data-tab="invest" aria-selected="false">Étapes à cocher</button>
     <button type="button" role="tab" data-tab="mdph" aria-selected="false">Démarches MDPH</button>
     <button type="button" role="tab" data-tab="compare" aria-selected="false">Comparatifs</button>
     <button type="button" role="tab" data-tab="parents" aria-selected="false">Plan héritage 50+</button>
   </nav>
 
-  <section class="tool" aria-labelledby="where-title" data-only="invest">
+  <section class="tool" aria-labelledby="split-title" data-only="resume">
+    <div class="phase-head">
+      <span class="eyebrow">Exemple avec 40 000 € d'économies</span>
+      <h2 id="split-title">Comment les répartir</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="where-table">
+        <thead><tr><th scope="col">Montant</th><th scope="col">Où</th><th scope="col">Rôle</th></tr></thead>
+        <tbody>
+          <tr><td class="num"><b>20 000 €</b></td><td>LEP de ton conjoint (10 000 €) + ton LEP si tu y as droit (10 000 €), sinon Livret A</td><td>Matelas : environ 13 mois de dépenses. On n'y touche que pour un imprévu ou si le mois est dans le rouge.</td></tr>
+          <tr><td class="num"><b>1 200 €</b></td><td>2 PEA Bourse Direct (100 € chacun) + 2 assurances-vie Linxea (500 € chacune)</td><td>Ouvrir maintenant pour démarrer les compteurs fiscaux (5 et 8 ans).</td></tr>
+          <tr><td class="num"><b>6 000 €</b></td><td>500 €/mois pendant 12 mois : 250 € par PEA, en WPEA automatique</td><td>Investissement prudent pendant l'année de chômage.</td></tr>
+          <tr><td class="num"><b>12 800 €</b></td><td>Livret A, en attente</td><td>Investis sur 6 mois quand ton conjoint retrouve un emploi.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tool" aria-labelledby="when-title" data-only="resume">
+    <div class="phase-head">
+      <span class="eyebrow">Calendrier</span>
+      <h2 id="when-title">Quoi faire, et quand</h2>
+    </div>
+    <ol class="sum-steps">
+      <li><span class="when-tag">Avant le 31 décembre 2026</span><b>Ouvrir le LEP de ton conjoint</b> au Crédit Agricole avec son avis d'impôt 2025, et y verser 10 000 €. Vérifier si tu as droit au tien.</li>
+      <li><span class="when-tag">Novembre 2026</span><b>Ouvrir 2 PEA chez Bourse Direct</b> (100 € chacun) et <b>2 assurances-vie Linxea Spirit 2</b> (500 € chacune). Mettre le reste du matelas sur Livret A et LDDS.</li>
+      <li><span class="when-tag">Décembre 2026 → reprise</span><b>Investissement programmé de 250 € par PEA</b> en WPEA, pris sur l'épargne. Si un mois est dans le rouge, on saute ce mois.</li>
+      <li><span class="when-tag">Retour à l'emploi</span><b>Investir les 12 800 € en attente sur 6 mois</b>, puis un virement automatique chaque mois : salaire net − dépenses (≈ 1 600 €) − 500 € de marge. Avec 3 000 € de salaire : environ 800 €/mois.</li>
+      <li><span class="when-tag">Chaque année</span>Augmenter le versement si les revenus montent, vérifier le matelas, ne rien vendre.</li>
+      <li><span class="when-tag">En parallèle</span>Dossier MDPH (onglet Démarches MDPH). Si l'AAH est accordée, ajouter environ 400 €/mois.</li>
+    </ol>
+  </section>
+
+  <section class="tool" aria-labelledby="rules-sum-title" data-only="resume">
+    <div class="phase-head">
+      <span class="eyebrow">À retenir</span>
+      <h2 id="rules-sum-title">Les 3 règles</h2>
+    </div>
+    <div class="rules">
+      <div class="rule"><h3>Ne jamais vendre pendant une baisse</h3><p>Une chute de 30 à 50 % arrivera. On continue les versements.</p></div>
+      <div class="rule"><h3>Un seul ETF, aucun produit bancaire</h3><p>WPEA dans les PEA. Refuser les placements proposés par la banque.</p></div>
+      <div class="rule"><h3>Le matelas d'abord</h3><p>S'il sert, on le reconstitue avant de réinvestir.</p></div>
+    </div>
+    <p class="phase-intro">Le détail de chaque étape, à cocher au fur et à mesure, est dans l'onglet « Étapes à cocher ».</p>
+  </section>
+
+  <section class="tool" aria-labelledby="where-title" data-only="resume">
     <div class="phase-head">
       <span class="eyebrow">Récapitulatif</span>
       <h2 id="where-title">Où faire quoi</h2>
@@ -839,12 +890,12 @@ const fmtDate = iso => { try { return new Date(iso).toLocaleDateString("fr-FR", 
 const isDone = id => !!(state[id] && state[id].done);
 let year = Math.min(Math.max(new Date().getFullYear() + (new Date().getMonth() >= 10 ? 1 : 0), YEAR_MIN), YEAR_MAX);
 
-let tab = "invest";
-const TABS = ["invest", "mdph", "compare", "parents"];
+let tab = "resume";
+const TABS = ["resume", "invest", "mdph", "compare", "parents"];
 try {
   const h = location.hash === "#mere" ? "parents" : location.hash.slice(1);
   const saved = localStorage.getItem("plan-tab");
-  tab = TABS.includes(h) ? h : (TABS.includes(saved) ? saved : "invest");
+  tab = TABS.includes(h) ? h : (TABS.includes(saved) ? saved : "resume");
 } catch (e) {}
 const LEDE = document.getElementById("lede").innerHTML;
 const COMPARE_LEDE = "Les chiffres qui justifient les choix des plans : la projection de la personne qui a hérité à 65 ans et le classement des assurances-vie, courtiers PEA et PER. Rien à cocher ici.";
